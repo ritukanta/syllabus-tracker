@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syllabus Progress Tracker</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80' font-family='Arial, sans-serif' font-weight='bold' fill='blue' x='50' text-anchor='middle'>S</text></svg>"
+    />
+    <style>
+      :root {
+        --bg-color: #0f0f13;
+        --surface-color: #1a1a24;
+        --surface-border: #2d2d3d;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0b5;
+        --gold-primary: #ffea00; /* Glowing Golden Yellow */
+        --gold-glow: rgba(255, 234, 0, 0.5);
+        --silver-secondary: #c0c0c0;
+        --silver-glow: rgba(192, 192, 192, 0.3);
+        --header-bg: rgba(15, 15, 19, 0.9);
+        --card-hover: #222230;
+      }
+
+      [data-theme="light"] {
+        --bg-color: #f4f4f8;
+        --surface-color: #ffffff;
+        --surface-border: #e0e0e0;
+        --text-primary: #121212;
+        --text-secondary: #555555;
+        --gold-primary: #ffb300; /* Adjusted for visibility in light mode */
+        --gold-glow: rgba(255, 179, 0, 0.4);
+        --silver-secondary: #808080;
+        --silver-glow: rgba(128, 128, 128, 0.2);
+        --header-bg: rgba(244, 244, 248, 0.9);
+        --card-hover: #fcfcfc;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Calibri", "Arial", "Verdana", sans-serif;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease,
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background-color: var(--header-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--surface-border);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--gold-primary);
+        text-shadow: 0 0 10px var(--gold-glow);
+        letter-spacing: 1px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        position: relative;
+      }
+
+      #authError {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background-color: #ff3333;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        display: none;
+        white-space: nowrap;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      button {
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.2rem;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+
+      .btn-auth {
+        background-color: transparent;
+        color: var(--silver-secondary);
+        border: 1px solid var(--silver-secondary);
+        box-shadow: 0 0 5px var(--silver-glow);
+      }
+
+      .btn-auth:hover {
+        background-color: var(--silver-secondary);
+        color: var(--bg-color);
+        box-shadow: 0 0 15px var(--silver-glow);
+      }
+
+      .btn-theme {
+        background-color: var(--surface-color);
+        color: var(--text-primary);
+        border: 1px solid var(--surface-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 50%;
+      }
+
+      .btn-theme:hover {
+        border-color: var(--gold-primary);
+        box-shadow: 0 0 10px var(--gold-glow);
+      }
+
+      .tabs-wrapper {
+        width: 100%;
+        background-color: var(--surface-color);
+        border-bottom: 1px solid var(--surface-border);
+        padding: 0 1rem;
+      }
+
+      .odisha-wrapper {
+        background-color: var(--bg-color);
+        border-bottom: 1px solid var(--surface-border);
+      }
+
+      .tabs-container {
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        gap: 1rem;
+        padding: 10px 0;
+      }
+
+      .tabs-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tab-btn {
+        background: transparent;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        border: 1px solid transparent;
+      }
+
+      .odisha-wrapper .tab-btn {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+      }
+
+      .tab-btn:hover {
+        color: var(--text-primary);
+        background-color: var(--card-hover);
+      }
+
+      .tab-btn.active {
+        color: var(--gold-primary);
+        background-color: var(--bg-color);
+        border: 1px solid var(--gold-primary);
+        box-shadow:
+          inset 0 0 12px var(--gold-glow),
+          0 0 12px var(--gold-glow);
+        text-shadow: 0 0 8px var(--gold-glow);
+      }
+
+      main {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        min-height: 70vh;
+      }
+
+      .subject-title {
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: var(--silver-secondary);
+        text-shadow: 0 0 8px var(--silver-glow);
+        animation: fadeInDown 0.5s ease forwards;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .chapter-card {
+        background-color: var(--surface-color);
+        border: 1px solid var(--surface-border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        animation: fadeInUp 0.5s ease forwards;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .chapter-card:hover {
+        background-color: var(--card-hover);
+        border-color: var(--silver-secondary);
+        box-shadow: 0 5px 15px var(--silver-glow);
+        transform: translateY(-2px);
+      }
+
+      .chapter-card.completed {
+        border-color: var(--gold-primary);
+        box-shadow: 0 0 18px var(--gold-glow);
+      }
+
+      .chapter-info {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        flex: 1;
+      }
+
+      .serial-number {
+        font-weight: bold;
+        color: var(--silver-secondary);
+        font-size: 1.2rem;
+        min-width: 30px;
+      }
+
+      .chapter-card.completed .serial-number {
+        color: var(--gold-primary);
+      }
+
+      .chapter-name {
+        font-size: 1.1rem;
+        line-height: 1.4;
+      }
+
+      .checkbox-wrapper {
+        position: relative;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+      }
+
+      .checkbox-wrapper input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+      }
+
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 28px;
+        width: 28px;
+        background-color: transparent;
+        border: 2px solid var(--surface-border);
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .chapter-card:hover .checkmark {
+        border-color: var(--silver-secondary);
+      }
+
+      .checkbox-wrapper input:checked ~ .checkmark {
+        background-color: var(--gold-primary);
+        border-color: var(--gold-primary);
+        box-shadow: 0 0 15px var(--gold-glow);
+      }
+
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 9px;
+        top: 4px;
+        width: 6px;
+        height: 12px;
+        border: solid var(--bg-color);
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+      }
+
+      .checkbox-wrapper input:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          gap: 1rem;
+          padding: 1rem;
+        }
+        .grid-container {
+          grid-template-columns: 1fr;
+        }
+        main {
+          padding: 1.5rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <h1>Syllabus Progress Tracker</h1>
+      </div>
+      <div class="controls">
+        <button
+          type="button"
+          class="btn-theme"
+          id="themeBtn"
+          onclick="window.toggleTheme()"
+          title="Toggle Theme"
+        >
+          <svg
+            id="moonIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="display: none"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg
+            id="sunIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="tabs-wrapper">
+      <div class="tabs-container" id="tabsContainer">
+        <!-- Main Tabs injected here -->
+      </div>
+    </div>
+
+    <div
+      class="tabs-wrapper odisha-wrapper"
+      id="odishaWrapper"
+      style="display: none"
+    >
+      <div class="tabs-container" id="odishaTabsContainer">
+        <!-- Odisha Tabs injected here -->
+      </div>
+    </div>
+
+    <main>
+      <h2 class="subject-title" id="currentSubjectTitle">Select a Subject</h2>
+      <div class="grid-container" id="chaptersGrid">
+        <!-- Chapter cards injected here -->
+      </div>
+    </main>
+
+    <script type="module">
+      const rawData = {
+        "Indian Geography": [
+          "Solar System",
+          "Longitude and Latitude",
+          "Earth's Interior and Plate Tectonics",
+          "Rocks Continents and Ocean",
+          "Rocks and Volcanoes",
+          "Geomorphology",
+          "Landforms",
+          "Atmosphere",
+          "Condensation and Precipitation",
+          "Wind, Ocean Current and Cyclone",
+          "India and Its Location",
+          "Himalayas",
+          "Peninsular Plateaus",
+          "Northern Plain and Islands",
+          "Himalayan River System",
+          "Peninsular Rivers",
+          "Dams, Lakes and Waterfall",
+          "Monsoon",
+          "Forest and Grassland",
+          "Soil",
+          "Agriculture",
+          "Minerals",
+          "Transport",
+          "World Map",
+          "Human Geography",
+        ],
+        "Indian Ancient History": [
+          "Stone Age",
+          "Indus Valley Civilization*",
+          "Vedic Age*",
+          "Jainism and Buddhism*",
+          "Mahajanpadas",
+          "Maurya Dynasty*",
+          "Post-Maurya Dynasties",
+          "Gupta Dynasty*",
+          "Post-Gupta Dynasties",
+          "Sangam Age",
+          "Tripartite Struggle and Cholas*",
+        ],
+        "Indian Medieval History": [
+          "Islamic Invasion",
+          "Delhi Sultanate",
+          "Vijayanagara Empire and Bahmis",
+          "Mughals",
+          "Aurangzeb and Later Mughals",
+          "Marathas",
+          "Bhakti and Sufi Movements",
+        ],
+        "Indian Modern History": [
+          "Advent of Europeans*",
+          "Socio-Religious Reforms*",
+          "Revolt of 1857*",
+          "Indian National Congress*",
+          "Bengal Partition*",
+          "Gandhian Era*",
+          "CDM and Simon Commission*",
+          "Quit India Movement*",
+          "Governor-General and Viceroy*",
+        ],
+        "Indian Polity": [
+          "Sources of Constitution",
+          "Making of Constitution",
+          "Salient Features of Constitution",
+          "Preamble, Part I & Part II",
+          "Fundamental Rights",
+          "DPSPs & Fundamental Duties",
+          "President & Vice President",
+          "Prime Minister & Council of Ministers",
+          "Parliament",
+          "State",
+          "Central-State Relations",
+          "Emergency & Constitutional Amendments",
+          "Supreme Court & High Court",
+          "Local Government",
+          "Constitutional & Non Constitutional Bodies",
+          "New Criminal Laws 2023",
+          "Important Acts",
+        ],
+        "Indian Economics": [
+          "Basics of Economy",
+          "Micro Economics",
+          "Inflation and Unemployment",
+          "National Income",
+          "Budget and Taxation",
+          "Money and Banking",
+          "Banking System",
+          "Balance of Payments",
+          "Poverty",
+          "Five Year Plans & NITI Aayog",
+        ],
+        "Static GK": [
+          "Festivals of India",
+          "Classical Dances",
+          "Folk Dances",
+          "Music",
+          "Census 2011",
+          "Books and Authors*",
+          "Sports",
+          "National and International Organizations",
+        ],
+        Science: [
+          "Nutrients",
+          "Cell",
+          "Circulation",
+          "Excretion",
+          "Reproduction",
+          "Respiration",
+          "Ecosystem",
+          "Diseases",
+          "Animal Kingdom",
+          "Chemical names and Formulas",
+          "Periodic Table",
+          "Acids, Bases and Salts",
+          "Metals and Nonmetals",
+          "Chemical Reactions",
+        ],
+        English: [
+          "Grammatical Error*",
+          "Nouns*",
+          "Pronouns*",
+          "Adjectives*",
+          "Verbs*",
+          "Adverbs",
+          "Prepositions*",
+          "Conjunctions*",
+          "Subject-Verb Agreement*",
+          "Tenses*",
+          "Active and Passive Voice*",
+          "Direct and Indirect Speech*",
+          "Question Tags",
+          "Fill in the Blanks",
+          "Sentence Completion",
+          "Sentence Improvement",
+          "Cloze Test",
+          "VOCAB: One Word Substitution*",
+          "VOCAB: Idioms and Phrases*",
+          "VOCAB: Synonyms & Antonyms*",
+          "VOCAB: Spelling Test",
+        ],
+        Mathematics: [
+          "Geometry: Triangle",
+          "Geometry: Quadrilateral",
+          "Geometry: Polygon",
+          "Geometry: Circle",
+          "Geometry: Lines & Angles",
+          "Mensuration 2D",
+          "Mensuration 3D",
+          "Number System*",
+          "LCM & HCF*",
+          "Sequence & Series",
+          "Simplification*",
+          "Surds & Indices",
+          "Algebra*",
+          "Trigonometry",
+          "Height & Distance",
+          "Co-ordinate Geometry",
+          "Percentage",
+          "Profit & Loss",
+          "Discount",
+          "SI & SI Instalment",
+          "CI & CI Instalment",
+          "Ratio & Proportion",
+          "Age Problems",
+          "Partnership",
+          "Mixture*",
+          "Alligation",
+          "Average",
+          "Time & Work",
+          "Pipe & Cistern*",
+          "Time & Distance*",
+          "Train",
+          "Boat & Stream*",
+          "Linear & Circular Race",
+          "Permutation & Combination",
+          "Probability",
+          "Statistics",
+        ],
+        Reasoning: [
+          "Classification*",
+          "Analogy*",
+          "Coding and Decoding*",
+          "Blood Relation*",
+          "Direction & Distance*",
+          "Syllogism*",
+          "Puzzles",
+          "Seating Arrangement*",
+          "Alphabet Series",
+          "Number Series",
+          "Alphanumeric Series",
+          "Mixed Series",
+          "Missing Number",
+          "Alphabet Test",
+          "Word Problem + Number Problems",
+          "Ranking Test",
+          "Mathematical Operation",
+          "Logical Venn Diagram*",
+          "Analytical Reasoning",
+          "Inequality",
+          "Data Sufficiency",
+          "Calendar",
+          "Clock",
+          "NV: Cube and Dice*",
+          "NV: Water Image and Mirror Image*",
+          "NV: Paper Cutting and Folding*",
+          "NV: Embedded Figure*",
+          "NV: Figure Counting*",
+        ],
+        Computer: [
+          "E-Mail",
+          "Memory",
+          "MS Word",
+          "MS Excel",
+          "MS PowerPoint",
+          "MS Access",
+          "Networking: Models",
+          "Networking: Types & Topologies",
+          "Networking: Devices & Protocols",
+          "Networking: IP vs. MAC Addresses",
+          "Internet",
+          "Virus/Malware",
+          "Printer",
+          "Software & Types",
+          "Windows OS",
+          "Windows Explorer",
+          "Hardware (I/O)",
+          "CPU",
+          "Computer Types",
+          "History & Generations",
+          "Programming",
+          "File Extensions",
+        ],
+        "Odisha Geography": [
+          "Geographical Features of Odisha",
+          "Climate and Soils of Odisha",
+          "Rivers and Drainage System of Odisha",
+          "Natural Vegetation of Odisha",
+          "National Parks and Wildlife Sanctuaries",
+          "Agriculture and Irrigation in Odisha",
+          "Animal Husbandry in Odisha",
+        ],
+        "Odisha History": [
+          "Ancient History of Odisha",
+          "Medieval History of Odisha",
+          "Modern History of Odisha",
+          "Freedom Struggle in Odisha",
+          "Formation of Odisha",
+          "Tribal and Social Movements in Odisha",
+        ],
+        "Odisha Polity": [
+          "Administrative Set-up of Odisha",
+          "Judiciary in Odisha",
+          "Local Self-Govt in Odisha",
+          "District Profile of Odisha",
+        ],
+        "Odisha Economics": [
+          "Industries of Odisha",
+          "Mineral Resources of Odisha",
+          "Energy Sector of Odisha",
+          "Transportation in Odisha",
+          "Communication and Cinema in Odisha",
+        ],
+        "Odisha Art, Culture & Misc": [
+          "Tourism in Odisha",
+          "Folk Art, Craft and Culture of Odisha",
+          "Music and Dance of Odisha",
+          "Language and Literature of Odisha",
+          "Fairs and Festivals of Odisha",
+          "Caste and Tribes in Odisha",
+          "Famous Personalities",
+          "Demographic Profile (Census)",
+        ],
+        Odia: [
+          "ଧ୍ଵନି, ବର୍ଣ୍ଣ, ମାତ୍ରା ଓ ଫଳା*",
+          "ଶବ୍ଦ ବିଭାଗ*",
+          "ବାକ୍ୟ ବିଭାଗ*",
+          "ବିଶେଷ୍ୟ ଓ ସର୍ବନାମ*",
+          "ବିଶେଷଣ",
+          "ଲିଙ୍ଗ, ପୁରୁଷ ଓ ବଚନ",
+          "କାରକ*",
+          "ବିଭକ୍ତି*",
+          "ଅବ୍ୟୟ",
+          "ଉପସର୍ଗ",
+          "କ୍ରିୟା",
+          "ସନ୍ଧି",
+          "ସମାସ*",
+          "କୃଦନ୍ତ",
+          "ତଦ୍ଧିତ",
+          "ଏକପଦୀକରଣ",
+          "ବିପରୀତ-ଅର୍ଥ ବୋଧକ ଶବ୍ଦ*",
+          "ପ୍ରତିଶବ୍ଦ*",
+          "ରୂଢି",
+          "ଲୋକବାଣୀ",
+          "ଅନୁଛେଦ*",
+        ],
+      };
+
+      const syllabusData = {};
+      for (const subject in rawData) {
+        syllabusData[subject] = rawData[subject].map((chapter) =>
+          chapter.replace(/\*/g, "").trim(),
+        );
+      }
+
+      const mainSubjectsList = [
+        "Indian Geography",
+        "Indian Ancient History",
+        "Indian Medieval History",
+        "Indian Modern History",
+        "Indian Polity",
+        "Indian Economics",
+        "Static GK",
+        "Science",
+        "English",
+        "Mathematics",
+        "Reasoning",
+        "Computer",
+      ];
+
+      const odishaSubjectsList = [
+        "Odisha Geography",
+        "Odisha History",
+        "Odisha Polity",
+        "Odisha Economics",
+        "Odisha Art, Culture & Misc",
+        "Odia",
+      ];
+
+      let currentSubject = mainSubjectsList[0];
+      let userProgress =
+        JSON.parse(localStorage.getItem("syllabusProgress")) || {};
+
+      window.switchSubject = function (subject, isOdishaTab = false) {
+        currentSubject = subject;
+
+        document
+          .querySelectorAll("#tabsContainer .tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document
+          .querySelectorAll("#odishaTabsContainer .tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+
+        if (isOdishaTab) {
+          document.getElementById("odishaMainTabBtn").classList.add("active");
+          document.getElementById("odishaWrapper").style.display = "block";
+
+          document
+            .querySelectorAll("#odishaTabsContainer .tab-btn")
+            .forEach((btn) => {
+              if (btn.textContent === subject) {
+                btn.classList.add("active");
+                btn.scrollIntoView({
+                  behavior: "smooth",
+                  block: "nearest",
+                  inline: "center",
+                });
+              }
+            });
+        } else {
+          document.getElementById("odishaWrapper").style.display = "none";
+
+          document
+            .querySelectorAll("#tabsContainer .tab-btn")
+            .forEach((btn) => {
+              if (btn.textContent === subject) {
+                btn.classList.add("active");
+                btn.scrollIntoView({
+                  behavior: "smooth",
+                  block: "nearest",
+                  inline: "center",
+                });
+              }
+            });
+        }
+
+        document.getElementById("currentSubjectTitle").textContent = subject;
+        renderChapters();
+      };
+
+      function renderTabs() {
+        const container = document.getElementById("tabsContainer");
+        container.innerHTML = "";
+
+        mainSubjectsList.forEach((subject) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "tab-btn";
+          btn.textContent = subject;
+          btn.onclick = () => window.switchSubject(subject, false);
+          container.appendChild(btn);
+        });
+
+        const odishaMainBtn = document.createElement("button");
+        odishaMainBtn.type = "button";
+        odishaMainBtn.className = "tab-btn";
+        odishaMainBtn.id = "odishaMainTabBtn";
+        odishaMainBtn.textContent = "Odisha Specifics";
+        odishaMainBtn.onclick = () =>
+          window.switchSubject(odishaSubjectsList[0], true);
+        container.appendChild(odishaMainBtn);
+
+        const odishaContainer = document.getElementById("odishaTabsContainer");
+        odishaContainer.innerHTML = "";
+
+        odishaSubjectsList.forEach((subject) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "tab-btn";
+          btn.textContent = subject;
+          btn.onclick = () => window.switchSubject(subject, true);
+          odishaContainer.appendChild(btn);
+        });
+      }
+
+      function renderChapters() {
+        const grid = document.getElementById("chaptersGrid");
+        grid.innerHTML = "";
+
+        const chapters = syllabusData[currentSubject];
+
+        if (!chapters) return;
+
+        chapters.forEach((chapter, index) => {
+          const isChecked =
+            userProgress[currentSubject] && userProgress[currentSubject][index]
+              ? true
+              : false;
+
+          const card = document.createElement("div");
+          card.className = `chapter-card ${isChecked ? "completed" : ""}`;
+          card.style.animationDelay = `${index * 0.03}s`;
+          card.onclick = (e) =>
+            window.toggleChapter(e, currentSubject, index, card);
+
+          card.innerHTML = `
+                    <div class="chapter-info">
+                        <span class="serial-number">${String(index + 1).padStart(2, "0")}.</span>
+                        <span class="chapter-name">${chapter}</span>
+                    </div>
+                    <label class="checkbox-wrapper" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="chk-${currentSubject}-${index}" ${isChecked ? "checked" : ""} onchange="window.toggleChapterCheckbox('${currentSubject}', ${index}, this, this.closest('.chapter-card'))">
+                        <span class="checkmark"></span>
+                    </label>
+                `;
+
+          grid.appendChild(card);
+        });
+      }
+
+      window.toggleChapter = function (e, subject, index, cardElement) {
+        if (e.target.tagName.toLowerCase() === "input") return;
+
+        const checkbox = cardElement.querySelector("input");
+        checkbox.checked = !checkbox.checked;
+        handleStateChange(subject, index, checkbox.checked, cardElement);
+      };
+
+      window.toggleChapterCheckbox = function (
+        subject,
+        index,
+        checkboxElement,
+        cardElement,
+      ) {
+        handleStateChange(subject, index, checkboxElement.checked, cardElement);
+      };
+
+      function handleStateChange(subject, index, isCompleted, cardElement) {
+        if (isCompleted) {
+          cardElement.classList.add("completed");
+        } else {
+          cardElement.classList.remove("completed");
+        }
+
+        if (!userProgress[subject]) userProgress[subject] = {};
+        userProgress[subject][index] = isCompleted;
+
+        localStorage.setItem("syllabusProgress", JSON.stringify(userProgress));
+      }
+
+      window.toggleTheme = function () {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", newTheme);
+        updateThemeIcons();
+      };
+
+      function updateThemeIcons() {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        const sunIcon = document.getElementById("sunIcon");
+        const moonIcon = document.getElementById("moonIcon");
+
+        if (currentTheme === "dark") {
+          sunIcon.style.display = "block";
+          moonIcon.style.display = "none";
+        } else {
+          sunIcon.style.display = "none";
+          moonIcon.style.display = "block";
+        }
+      }
+
+      window.onload = () => {
+        renderTabs();
+        window.switchSubject(currentSubject, false);
+        updateThemeIcons();
+      };
+    </script>
+  </body>
+</html>
