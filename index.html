@@ -15,7 +15,7 @@
         --surface-border: #2d2d3d;
         --text-primary: #ffffff;
         --text-secondary: #a0a0b5;
-        --gold-primary: #ffea00; /* Glowing Golden Yellow */
+        --gold-primary: #ffea00;
         --gold-glow: rgba(255, 234, 0, 0.5);
         --silver-secondary: #c0c0c0;
         --silver-glow: rgba(192, 192, 192, 0.3);
@@ -29,7 +29,7 @@
         --surface-border: #e0e0e0;
         --text-primary: #121212;
         --text-secondary: #555555;
-        --gold-primary: #ffb300; /* Adjusted for visibility in light mode */
+        --gold-primary: #ffb300;
         --gold-glow: rgba(255, 179, 0, 0.4);
         --silver-secondary: #808080;
         --silver-glow: rgba(128, 128, 128, 0.2);
@@ -358,6 +358,14 @@
       <div class="controls">
         <button
           type="button"
+          class="btn-auth"
+          id="authBtn"
+          onclick="window.toggleAuth()"
+        >
+          Sign In with GitHub
+        </button>
+        <button
+          type="button"
           class="btn-theme"
           id="themeBtn"
           onclick="window.toggleTheme()"
@@ -428,6 +436,15 @@
     </main>
 
     <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+      const SUPABASE_URL = "https://ofcphxplhiaoksdhwyec.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mY3BoeHBsaGlhb2tzZGh3eWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMjY5ODQsImV4cCI6MjA5OTcwMjk4NH0.oeHZWek0eV_23Z124Hs2aaW31efEwW1A45QH6GmjAZ4";
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      let currentUser = null;
+
       const rawData = {
         "Indian Geography": [
           "Solar System",
@@ -458,16 +475,16 @@
         ],
         "Indian Ancient History": [
           "Stone Age",
-          "Indus Valley Civilization*",
-          "Vedic Age*",
-          "Jainism and Buddhism*",
+          "Indus Valley Civilization",
+          "Vedic Age",
+          "Jainism and Buddhism",
           "Mahajanpadas",
-          "Maurya Dynasty*",
+          "Maurya Dynasty",
           "Post-Maurya Dynasties",
-          "Gupta Dynasty*",
+          "Gupta Dynasty",
           "Post-Gupta Dynasties",
           "Sangam Age",
-          "Tripartite Struggle and Cholas*",
+          "Tripartite Struggle and Cholas",
         ],
         "Indian Medieval History": [
           "Islamic Invasion",
@@ -479,15 +496,15 @@
           "Bhakti and Sufi Movements",
         ],
         "Indian Modern History": [
-          "Advent of Europeans*",
-          "Socio-Religious Reforms*",
-          "Revolt of 1857*",
-          "Indian National Congress*",
-          "Bengal Partition*",
-          "Gandhian Era*",
-          "CDM and Simon Commission*",
-          "Quit India Movement*",
-          "Governor-General and Viceroy*",
+          "Advent of Europeans",
+          "Socio-Religious Reforms",
+          "Revolt of 1857",
+          "Indian National Congress",
+          "Bengal Partition",
+          "Gandhian Era",
+          "CDM and Simon Commission",
+          "Quit India Movement",
+          "Governor-General and Viceroy",
         ],
         "Indian Polity": [
           "Sources of Constitution",
@@ -526,7 +543,7 @@
           "Folk Dances",
           "Music",
           "Census 2011",
-          "Books and Authors*",
+          "Books and Authors",
           "Sports",
           "National and International Organizations",
         ],
@@ -547,26 +564,26 @@
           "Chemical Reactions",
         ],
         English: [
-          "Grammatical Error*",
-          "Nouns*",
-          "Pronouns*",
-          "Adjectives*",
-          "Verbs*",
+          "Grammatical Error",
+          "Nouns",
+          "Pronouns",
+          "Adjectives",
+          "Verbs",
           "Adverbs",
-          "Prepositions*",
-          "Conjunctions*",
-          "Subject-Verb Agreement*",
-          "Tenses*",
-          "Active and Passive Voice*",
-          "Direct and Indirect Speech*",
+          "Prepositions",
+          "Conjunctions",
+          "Subject-Verb Agreement",
+          "Tenses",
+          "Active and Passive Voice",
+          "Direct and Indirect Speech",
           "Question Tags",
           "Fill in the Blanks",
           "Sentence Completion",
           "Sentence Improvement",
           "Cloze Test",
-          "VOCAB: One Word Substitution*",
-          "VOCAB: Idioms and Phrases*",
-          "VOCAB: Synonyms & Antonyms*",
+          "VOCAB: One Word Substitution",
+          "VOCAB: Idioms and Phrases",
+          "VOCAB: Synonyms & Antonyms",
           "VOCAB: Spelling Test",
         ],
         Mathematics: [
@@ -577,12 +594,12 @@
           "Geometry: Lines & Angles",
           "Mensuration 2D",
           "Mensuration 3D",
-          "Number System*",
-          "LCM & HCF*",
+          "Number System",
+          "LCM & HCF",
           "Sequence & Series",
-          "Simplification*",
+          "Simplification",
           "Surds & Indices",
-          "Algebra*",
+          "Algebra",
           "Trigonometry",
           "Height & Distance",
           "Co-ordinate Geometry",
@@ -594,14 +611,14 @@
           "Ratio & Proportion",
           "Age Problems",
           "Partnership",
-          "Mixture*",
+          "Mixture",
           "Alligation",
           "Average",
           "Time & Work",
-          "Pipe & Cistern*",
-          "Time & Distance*",
+          "Pipe & Cistern",
+          "Time & Distance",
           "Train",
-          "Boat & Stream*",
+          "Boat & Stream",
           "Linear & Circular Race",
           "Permutation & Combination",
           "Probability",
@@ -715,34 +732,34 @@
           "Demographic Profile (Census)",
         ],
         Odia: [
-          "ଧ୍ଵନି, ବର୍ଣ୍ଣ, ମାତ୍ରା ଓ ଫଳା*",
-          "ଶବ୍ଦ ବିଭାଗ*",
-          "ବାକ୍ୟ ବିଭାଗ*",
-          "ବିଶେଷ୍ୟ ଓ ସର୍ବନାମ*",
+          "ଧ୍ଵନି, ବର୍ଣ୍ଣ, ମାତ୍ରା ଓ ଫଳା",
+          "ଶବ୍ଦ ବିଭାଗ",
+          "ବାକ୍ୟ ବିଭାଗ",
+          "ବିଶେଷ୍ୟ ଓ ସର୍ବନାମ",
           "ବିଶେଷଣ",
           "ଲିଙ୍ଗ, ପୁରୁଷ ଓ ବଚନ",
-          "କାରକ*",
-          "ବିଭକ୍ତି*",
+          "କାରକ",
+          "ବିଭକ୍ତି",
           "ଅବ୍ୟୟ",
           "ଉପସର୍ଗ",
           "କ୍ରିୟା",
           "ସନ୍ଧି",
-          "ସମାସ*",
+          "ସମାସ",
           "କୃଦନ୍ତ",
           "ତଦ୍ଧିତ",
           "ଏକପଦୀକରଣ",
-          "ବିପରୀତ-ଅର୍ଥ ବୋଧକ ଶବ୍ଦ*",
-          "ପ୍ରତିଶବ୍ଦ*",
+          "ବିପରୀତ-ଅର୍ଥ ବୋଧକ ଶବ୍ଦ",
+          "ପ୍ରତିଶବ୍ଦ",
           "ରୂଢି",
           "ଲୋକବାଣୀ",
-          "ଅନୁଛେଦ*",
+          "ଅନୁଛେଦ",
         ],
       };
 
       const syllabusData = {};
       for (const subject in rawData) {
         syllabusData[subject] = rawData[subject].map((chapter) =>
-          chapter.replace(/\*/g, "").trim(),
+          chapter.trim(),
         );
       }
 
@@ -771,8 +788,8 @@
       ];
 
       let currentSubject = mainSubjectsList[0];
-      let userProgress =
-        JSON.parse(localStorage.getItem("syllabusProgress")) || {};
+      // Removed localStorage initialization to strictly rely on cloud state
+      let userProgress = {};
 
       window.switchSubject = function (subject, isOdishaTab = false) {
         currentSubject = subject;
@@ -908,7 +925,12 @@
         handleStateChange(subject, index, checkboxElement.checked, cardElement);
       };
 
-      function handleStateChange(subject, index, isCompleted, cardElement) {
+      async function handleStateChange(
+        subject,
+        index,
+        isCompleted,
+        cardElement,
+      ) {
         if (isCompleted) {
           cardElement.classList.add("completed");
         } else {
@@ -918,7 +940,21 @@
         if (!userProgress[subject]) userProgress[subject] = {};
         userProgress[subject][index] = isCompleted;
 
-        localStorage.setItem("syllabusProgress", JSON.stringify(userProgress));
+        // localStorage saving completely removed to rely on Supabase
+
+        if (currentUser) {
+          const chapterName = syllabusData[subject][index];
+          const actionText = isCompleted
+            ? `Checked: ${chapterName} in ${subject}`
+            : `Unchecked: ${chapterName} in ${subject}`;
+
+          await supabase.from("site_logs").insert([{ action: actionText }]);
+
+          await supabase.from("user_progress").upsert({
+            user_id: currentUser.id,
+            progress_data: userProgress,
+          });
+        }
       }
 
       window.toggleTheme = function () {
@@ -944,10 +980,63 @@
         }
       }
 
+      window.toggleAuth = async function () {
+        if (currentUser) {
+          const { error } = await supabase.auth.signOut();
+          if (!error) {
+            currentUser = null;
+            document.getElementById("authBtn").textContent =
+              "Sign In with GitHub";
+            userProgress = {};
+            // localStorage clearing completely removed
+            renderChapters();
+          }
+        } else {
+          await supabase.auth.signInWithOAuth({
+            provider: "github",
+            options: {
+              redirectTo: window.location.origin + window.location.pathname,
+            },
+          });
+        }
+      };
+
+      async function loadUserData(userId) {
+        const { data, error } = await supabase
+          .from("user_progress")
+          .select("progress_data")
+          .eq("user_id", userId)
+          .single();
+
+        if (data && data.progress_data) {
+          userProgress = data.progress_data;
+          // localStorage populating completely removed
+          renderChapters();
+        }
+      }
+
+      async function checkSession() {
+        supabase.auth.onAuthStateChange(async (event, currentSession) => {
+          if (currentSession) {
+            currentUser = currentSession.user;
+            document.getElementById("authBtn").textContent = "Sign Out";
+            await loadUserData(currentUser.id);
+          } else {
+            currentUser = null;
+            document.getElementById("authBtn").textContent =
+              "Sign In with GitHub";
+            userProgress = {};
+            // localStorage clearing completely removed
+            renderChapters();
+          }
+        });
+      }
+
       window.onload = () => {
         renderTabs();
         window.switchSubject(currentSubject, false);
         updateThemeIcons();
+        checkSession();
       };
     </script>
   </body>
