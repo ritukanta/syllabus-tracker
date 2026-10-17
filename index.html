@@ -6,149 +6,455 @@
     <title>Syllabus Progress Tracker</title>
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80' font-family='Arial, sans-serif' font-weight='bold' fill='blue' x='50' text-anchor='middle'>S</text></svg>"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23FFF3B0'/><stop offset='50%' stop-color='%23FFD700'/><stop offset='100%' stop-color='%23B8860B'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='%230b0b0f' stroke='url(%23g)' stroke-width='6'/><text y='72' font-size='64' font-family='Georgia, serif' font-weight='bold' fill='url(%23g)' x='50' text-anchor='middle'>S</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&display=swap"
+      rel="stylesheet"
     />
     <style>
+      @font-face {
+        font-family: "Royal Enigma";
+        src: local("Royal Enigma"), local("Cinzel Decorative Bold"), local("Cinzel Bold");
+        font-weight: 700;
+        font-style: normal;
+      }
+
       :root {
-        --bg-color: #0f0f13;
-        --surface-color: #1a1a24;
-        --surface-border: #2d2d3d;
-        --text-primary: #ffffff;
-        --text-secondary: #a0a0b5;
-        --gold-primary: #ffea00;
-        --gold-glow: rgba(255, 234, 0, 0.5);
-        --silver-secondary: #c0c0c0;
-        --silver-glow: rgba(192, 192, 192, 0.3);
-        --header-bg: rgba(15, 15, 19, 0.9);
-        --card-hover: #222230;
+        --bg-color: #09090d;
+        --bg-radial: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.09) 0%, rgba(184, 134, 11, 0.03) 35%, transparent 70%);
+        --surface-color: #12121a;
+        --surface-elevated: #181824;
+        --surface-border: rgba(212, 175, 55, 0.24);
+        --surface-border-strong: rgba(255, 215, 0, 0.55);
+        --text-primary: #fdfbf7;
+        --text-secondary: #c8b88a;
+        --text-muted: #8e805e;
+        --gold-primary: #ffd700;
+        --gold-bright: #fff1a8;
+        --gold-metallic: #d4af37;
+        --gold-deep: #996515;
+        --gold-gradient: linear-gradient(135deg, #fff3b0 0%, #ffd700 35%, #d4af37 70%, #996515 100%);
+        --gold-text-gradient: linear-gradient(180deg, #fff8d6 0%, #ffd700 50%, #c59b27 100%);
+        --gold-glow: rgba(255, 215, 0, 0.48);
+        --gold-soft-glow: rgba(212, 175, 55, 0.22);
+        --header-bg: rgba(9, 9, 13, 0.88);
+        --card-hover: #191926;
+        --card-completed-bg: linear-gradient(145deg, rgba(255, 215, 0, 0.11) 0%, rgba(18, 18, 26, 0.96) 65%);
+        --shimmer-color: rgba(255, 241, 168, 0.22);
       }
 
       [data-theme="light"] {
-        --bg-color: #f4f4f8;
+        --bg-color: #faf7f0;
+        --bg-radial: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0.04) 40%, transparent 75%);
         --surface-color: #ffffff;
-        --surface-border: #e0e0e0;
-        --text-primary: #121212;
-        --text-secondary: #555555;
-        --gold-primary: #ffb300;
-        --gold-glow: rgba(255, 179, 0, 0.4);
-        --silver-secondary: #808080;
-        --silver-glow: rgba(128, 128, 128, 0.2);
-        --header-bg: rgba(244, 244, 248, 0.9);
-        --card-hover: #fcfcfc;
+        --surface-elevated: #fffdf7;
+        --surface-border: rgba(184, 134, 11, 0.28);
+        --surface-border-strong: rgba(184, 134, 11, 0.7);
+        --text-primary: #1c1608;
+        --text-secondary: #6e551c;
+        --text-muted: #947a3b;
+        --gold-primary: #c59300;
+        --gold-bright: #ffd700;
+        --gold-metallic: #b8860b;
+        --gold-deep: #7a5805;
+        --gold-gradient: linear-gradient(135deg, #ffe680 0%, #d4af37 45%, #b8860b 85%, #8a6200 100%);
+        --gold-text-gradient: linear-gradient(180deg, #b8860b 0%, #996515 60%, #6b4700 100%);
+        --gold-glow: rgba(212, 175, 55, 0.42);
+        --gold-soft-glow: rgba(184, 134, 11, 0.18);
+        --header-bg: rgba(250, 247, 240, 0.92);
+        --card-hover: #fff9eb;
+        --card-completed-bg: linear-gradient(145deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 255, 255, 0.98) 70%);
+        --shimmer-color: rgba(212, 175, 55, 0.25);
       }
 
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: "Calibri", "Arial", "Verdana", sans-serif;
-        transition:
-          background-color 0.3s ease,
-          color 0.3s ease,
-          border-color 0.3s ease,
-          box-shadow 0.3s ease;
+        font-family: "Calibri", "Carlito", "Segoe UI", "Arial", sans-serif;
       }
 
       body {
         background-color: var(--bg-color);
+        background-image: var(--bg-radial);
+        background-attachment: fixed;
         color: var(--text-primary);
         overflow-x: hidden;
-        scroll-behavior: smooth;
+        min-height: 100vh;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
       }
 
+      /* Intro Splash Screen Animation (2.4 seconds) */
+      #introOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: radial-gradient(circle at center, #17140a 0%, #07070a 75%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        pointer-events: all;
+        animation: introFadeOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) 2.1s forwards;
+      }
+
+      .intro-crest {
+        width: 86px;
+        height: 86px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.18), rgba(184, 134, 11, 0.05));
+        border: 2px solid #d4af37;
+        box-shadow:
+          0 0 30px rgba(255, 215, 0, 0.45),
+          inset 0 0 20px rgba(255, 215, 0, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        animation: crestPulse 1.8s ease-in-out infinite alternate, introScaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .intro-crest::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -120%;
+        width: 80%;
+        height: 200%;
+        background: linear-gradient(90deg, transparent, rgba(255, 248, 214, 0.65), transparent);
+        transform: rotate(25deg);
+        animation: introSweep 1.6s ease-in-out 0.25s forwards;
+      }
+
+      .intro-crest span {
+        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
+        font-size: 2.8rem;
+        font-weight: 900;
+        background: linear-gradient(180deg, #fff8d6 0%, #ffd700 55%, #b8860b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+      }
+
+      .intro-title {
+        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
+        font-size: clamp(1.6rem, 4vw, 2.7rem);
+        font-weight: 800;
+        text-align: center;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #c59b27 0%, #fff3b0 30%, #ffd700 50%, #fff3b0 70%, #b8860b 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.6rem;
+        opacity: 0;
+        animation:
+          introTextReveal 0.7s ease 0.2s forwards,
+          goldTextShine 2.4s linear infinite;
+      }
+
+      .intro-subtitle {
+        color: #c8b88a;
+        font-size: 0.95rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 1.8rem;
+        opacity: 0;
+        animation: introTextReveal 0.7s ease 0.4s forwards;
+      }
+
+      .intro-progress-track {
+        width: min(280px, 75vw);
+        height: 4px;
+        background: rgba(212, 175, 55, 0.18);
+        border-radius: 999px;
+        overflow: hidden;
+        box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+      }
+
+      .intro-progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #b8860b, #ffd700, #fff8d6, #ffd700);
+        border-radius: 999px;
+        box-shadow: 0 0 15px #ffd700;
+        animation: introBarFill 1.95s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+      }
+
+      @keyframes introScaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.75) translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      @keyframes introTextReveal {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes introSweep {
+        to {
+          left: 160%;
+        }
+      }
+
+      @keyframes introBarFill {
+        0% {
+          width: 0%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      @keyframes introFadeOut {
+        to {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+      }
+
+      @keyframes crestPulse {
+        from {
+          box-shadow: 0 0 22px rgba(255, 215, 0, 0.35), inset 0 0 14px rgba(255, 215, 0, 0.2);
+        }
+        to {
+          box-shadow: 0 0 38px rgba(255, 215, 0, 0.65), inset 0 0 24px rgba(255, 215, 0, 0.35);
+        }
+      }
+
+      @keyframes goldTextShine {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      /* Header */
       header {
         position: sticky;
         top: 0;
         z-index: 100;
         background-color: var(--header-bg);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
         border-bottom: 1px solid var(--surface-border);
-        padding: 1rem 2rem;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+        padding: 0.9rem 2rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
 
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .brand-emblem {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: var(--gold-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #09090d;
+        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
+        font-weight: 900;
+        font-size: 1.35rem;
+        box-shadow: 0 0 15px var(--gold-glow);
+        flex-shrink: 0;
+      }
+
       .brand h1 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: var(--gold-primary);
-        text-shadow: 0 0 10px var(--gold-glow);
+        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
+        font-size: 1.45rem;
+        font-weight: 800;
+        background: var(--gold-text-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 8px var(--gold-soft-glow));
         letter-spacing: 1px;
       }
 
       .controls {
         display: flex;
-        gap: 1rem;
+        gap: 0.9rem;
         align-items: center;
         position: relative;
-      }
-
-      #authError {
-        position: absolute;
-        top: 50px;
-        right: 0;
-        background-color: #ff3333;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        display: none;
-        white-space: nowrap;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
 
       button {
         cursor: pointer;
         border: none;
         outline: none;
-        border-radius: 8px;
-        padding: 0.6rem 1.2rem;
+        border-radius: 10px;
+        padding: 0.6rem 1.25rem;
         font-weight: bold;
-        font-size: 0.9rem;
+        font-size: 0.92rem;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.25s ease,
+          border-color 0.25s ease,
+          background-color 0.25s ease,
+          color 0.25s ease;
       }
 
       .btn-auth {
-        background-color: transparent;
-        color: var(--silver-secondary);
-        border: 1px solid var(--silver-secondary);
-        box-shadow: 0 0 5px var(--silver-glow);
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(212, 175, 55, 0.04));
+        color: var(--gold-primary);
+        border: 1px solid var(--gold-metallic);
+        box-shadow: 0 0 10px var(--gold-soft-glow);
+        letter-spacing: 0.4px;
+      }
+
+      .btn-auth::before,
+      .btn-back::before,
+      .tab-btn::before,
+      .section-card::before,
+      .chapter-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -110%;
+        width: 65%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--shimmer-color),
+          transparent
+        );
+        transform: skewX(-22deg);
+        transition: left 0.55s ease;
+        pointer-events: none;
+      }
+
+      .btn-auth:hover::before,
+      .btn-back:hover::before,
+      .tab-btn:hover::before,
+      .section-card:hover::before,
+      .chapter-card:hover::before {
+        left: 135%;
       }
 
       .btn-auth:hover {
-        background-color: var(--silver-secondary);
-        color: var(--bg-color);
-        box-shadow: 0 0 15px var(--silver-glow);
+        background: var(--gold-gradient);
+        color: #09090d;
+        border-color: var(--gold-bright);
+        box-shadow: 0 0 20px var(--gold-glow);
+        transform: translateY(-1px);
       }
 
       .btn-theme {
         background-color: var(--surface-color);
-        color: var(--text-primary);
+        color: var(--gold-primary);
         border: 1px solid var(--surface-border);
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
         padding: 0;
         border-radius: 50%;
+        box-shadow: 0 0 8px var(--gold-soft-glow);
       }
 
       .btn-theme:hover {
         border-color: var(--gold-primary);
-        box-shadow: 0 0 10px var(--gold-glow);
+        box-shadow: 0 0 18px var(--gold-glow);
+        transform: rotate(12deg) scale(1.05);
+      }
+
+      /* Sub-navigation / Back Bar & Subject Tabs */
+      .section-nav-bar {
+        width: 100%;
+        background-color: var(--surface-color);
+        border-bottom: 1px solid var(--surface-border);
+        padding: 0.75rem 2rem;
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.48rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.14), rgba(212, 175, 55, 0.05));
+        color: var(--gold-primary);
+        border: 1px solid var(--gold-metallic);
+        box-shadow: 0 0 10px var(--gold-soft-glow);
+      }
+
+      .btn-back:hover {
+        background: var(--gold-gradient);
+        color: #09090d;
+        border-color: var(--gold-bright);
+        box-shadow: 0 0 18px var(--gold-glow);
+        transform: translateX(-2px);
+      }
+
+      .active-section-crumb {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .active-section-crumb span.crumb-sep {
+        color: var(--gold-metallic);
       }
 
       .tabs-wrapper {
         width: 100%;
-        background-color: var(--surface-color);
+        background-color: var(--surface-elevated);
         border-bottom: 1px solid var(--surface-border);
-        padding: 0 1rem;
-      }
-
-      .odisha-wrapper {
-        background-color: var(--bg-color);
-        border-bottom: 1px solid var(--surface-border);
+        padding: 0 2rem;
+        display: none;
       }
 
       .tabs-container {
@@ -156,8 +462,8 @@
         overflow-x: auto;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        gap: 1rem;
-        padding: 10px 0;
+        gap: 0.75rem;
+        padding: 0.75rem 0;
       }
 
       .tabs-container::-webkit-scrollbar {
@@ -165,103 +471,334 @@
       }
 
       .tab-btn {
-        background: transparent;
+        background: var(--surface-color);
         color: var(--text-secondary);
         white-space: nowrap;
-        padding: 0.8rem 1.5rem;
-        border-radius: 8px;
-        font-size: 1rem;
-        border: 1px solid transparent;
-      }
-
-      .odisha-wrapper .tab-btn {
-        font-size: 0.9rem;
-        padding: 0.6rem 1.2rem;
+        padding: 0.68rem 1.35rem;
+        border-radius: 9px;
+        font-size: 0.98rem;
+        border: 1px solid var(--surface-border);
       }
 
       .tab-btn:hover {
-        color: var(--text-primary);
+        color: var(--gold-primary);
         background-color: var(--card-hover);
+        border-color: var(--gold-metallic);
+        box-shadow: 0 0 14px var(--gold-soft-glow);
+        transform: translateY(-1px);
       }
 
       .tab-btn.active {
-        color: var(--gold-primary);
-        background-color: var(--bg-color);
-        border: 1px solid var(--gold-primary);
-        box-shadow:
-          inset 0 0 12px var(--gold-glow),
-          0 0 12px var(--gold-glow);
-        text-shadow: 0 0 8px var(--gold-glow);
+        color: #09090d;
+        background: var(--gold-gradient);
+        border: 1px solid var(--gold-bright);
+        box-shadow: 0 0 18px var(--gold-glow);
+        font-weight: 800;
       }
 
+      /* Main Container */
       main {
-        padding: 2rem;
+        padding: 2.2rem 2rem 3.5rem;
         max-width: 1400px;
         margin: 0 auto;
-        min-height: 70vh;
+        min-height: 75vh;
+      }
+
+      /* Home View: 5 Distinct Sections */
+      #homeSectionsView {
+        display: block;
+      }
+
+      .home-hero {
+        text-align: center;
+        margin-bottom: 2.4rem;
+        animation: fadeInDown 0.45s ease forwards;
+      }
+
+      .home-hero-title {
+        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 900;
+        background: var(--gold-text-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 14px var(--gold-soft-glow));
+        letter-spacing: 1.5px;
+        margin-bottom: 0.5rem;
+      }
+
+      .home-hero-sub {
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+        letter-spacing: 0.6px;
+      }
+
+      .sections-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 1.75rem;
+      }
+
+      .section-card {
+        background: linear-gradient(155deg, var(--surface-elevated) 0%, var(--surface-color) 100%);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        padding: 1.85rem;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1.35rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        transition:
+          transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+          border-color 0.28s ease,
+          box-shadow 0.28s ease;
+        animation: fadeInUp 0.45s ease forwards;
+        opacity: 0;
+      }
+
+      .section-card:hover {
+        border-color: var(--gold-primary);
+        box-shadow:
+          0 12px 30px rgba(0, 0, 0, 0.35),
+          0 0 24px var(--gold-glow);
+        transform: translateY(-5px);
+      }
+
+      .section-card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .section-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.32rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(255, 215, 0, 0.12);
+        border: 1px solid var(--gold-metallic);
+        color: var(--gold-primary);
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .section-icon-box {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(184, 134, 11, 0.05));
+        border: 1px solid var(--gold-metallic);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold-primary);
+        box-shadow: 0 0 14px var(--gold-soft-glow);
+        flex-shrink: 0;
+      }
+
+      .section-card-title {
+        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
+        font-size: 1.55rem;
+        font-weight: 800;
+        background: var(--gold-text-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.3;
+        margin-top: 0.65rem;
+      }
+
+      .section-subjects-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+      }
+
+      .subject-pill {
+        font-size: 0.84rem;
+        padding: 0.28rem 0.7rem;
+        border-radius: 6px;
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid var(--surface-border);
+        color: var(--text-secondary);
+        font-weight: 600;
+      }
+
+      .section-card-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--surface-border);
+      }
+
+      .section-stats-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        font-weight: 700;
+      }
+
+      .section-open-cta {
+        color: var(--gold-primary);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-weight: 800;
+      }
+
+      .progress-track {
+        width: 100%;
+        height: 6px;
+        background: rgba(212, 175, 55, 0.14);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--gold-gradient);
+        border-radius: 999px;
+        box-shadow: 0 0 10px var(--gold-glow);
+        transition: width 0.35s ease;
+      }
+
+      /* Section Details / Subject Chapters View */
+      #subjectChaptersView {
+        display: none;
+      }
+
+      .subject-header-row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.8rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--surface-border);
       }
 
       .subject-title {
-        margin-bottom: 1.5rem;
-        font-size: 1.8rem;
-        color: var(--silver-secondary);
-        text-shadow: 0 0 8px var(--silver-glow);
-        animation: fadeInDown 0.5s ease forwards;
+        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
+        font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+        font-weight: 900;
+        background: var(--gold-text-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 12px var(--gold-soft-glow));
+        letter-spacing: 1.2px;
+        line-height: 1.2;
+        animation: fadeInDown 0.4s ease forwards;
+      }
+
+      .subject-progress-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.5rem 1.05rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.14), rgba(212, 175, 55, 0.05));
+        border: 1px solid var(--gold-metallic);
+        color: var(--gold-primary);
+        font-weight: 800;
+        font-size: 0.95rem;
+        box-shadow: 0 0 14px var(--gold-soft-glow);
       }
 
       .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        gap: 1.35rem;
       }
 
       .chapter-card {
         background-color: var(--surface-color);
         border: 1px solid var(--surface-border);
-        border-radius: 12px;
-        padding: 1.5rem;
+        border-radius: 13px;
+        padding: 1.35rem 1.45rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 1rem;
         cursor: pointer;
-        animation: fadeInUp 0.5s ease forwards;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.4s ease forwards;
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(14px);
+        transition:
+          background-color 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease,
+          transform 0.22s ease;
       }
 
       .chapter-card:hover {
         background-color: var(--card-hover);
-        border-color: var(--silver-secondary);
-        box-shadow: 0 5px 15px var(--silver-glow);
-        transform: translateY(-2px);
+        border-color: var(--gold-primary);
+        box-shadow:
+          0 6px 18px rgba(0, 0, 0, 0.28),
+          0 0 18px var(--gold-soft-glow);
+        transform: translateY(-3px);
       }
 
       .chapter-card.completed {
+        background: var(--card-completed-bg);
         border-color: var(--gold-primary);
-        box-shadow: 0 0 18px var(--gold-glow);
+        box-shadow:
+          0 0 22px var(--gold-glow),
+          inset 0 0 12px rgba(255, 215, 0, 0.12);
       }
 
       .chapter-info {
         display: flex;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 0.9rem;
         flex: 1;
       }
 
       .serial-number {
-        font-weight: bold;
-        color: var(--silver-secondary);
-        font-size: 1.2rem;
-        min-width: 30px;
+        font-weight: 800;
+        color: var(--gold-metallic);
+        font-size: 1.15rem;
+        min-width: 32px;
+        font-family: "Calibri", "Carlito", "Segoe UI", sans-serif;
+        transition: color 0.25s ease, text-shadow 0.25s ease;
       }
 
+      .chapter-card:hover .serial-number,
       .chapter-card.completed .serial-number {
         color: var(--gold-primary);
+        text-shadow: 0 0 10px var(--gold-glow);
       }
 
       .chapter-name {
-        font-size: 1.1rem;
-        line-height: 1.4;
+        font-family: "Calibri", "Carlito", "Segoe UI", "Arial", sans-serif;
+        font-size: 1.12rem;
+        font-weight: 600;
+        line-height: 1.42;
+        color: var(--text-primary);
+        transition: color 0.25s ease, text-shadow 0.25s ease;
+      }
+
+      .chapter-card.completed .chapter-name {
+        color: var(--gold-bright);
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.28);
+      }
+
+      [data-theme="light"] .chapter-card.completed .chapter-name {
+        color: var(--gold-deep);
+        text-shadow: none;
       }
 
       .checkbox-wrapper {
@@ -269,6 +806,7 @@
         width: 28px;
         height: 28px;
         flex-shrink: 0;
+        cursor: pointer;
       }
 
       .checkbox-wrapper input {
@@ -285,19 +823,27 @@
         height: 28px;
         width: 28px;
         background-color: transparent;
-        border: 2px solid var(--surface-border);
-        border-radius: 6px;
-        transition: all 0.3s ease;
+        border: 2px solid var(--gold-metallic);
+        border-radius: 7px;
+        transition:
+          background-color 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease,
+          transform 0.2s ease;
       }
 
       .chapter-card:hover .checkmark {
-        border-color: var(--silver-secondary);
+        border-color: var(--gold-primary);
+        box-shadow: 0 0 12px var(--gold-soft-glow);
       }
 
       .checkbox-wrapper input:checked ~ .checkmark {
-        background-color: var(--gold-primary);
-        border-color: var(--gold-primary);
-        box-shadow: 0 0 15px var(--gold-glow);
+        background: var(--gold-gradient);
+        border-color: var(--gold-bright);
+        box-shadow:
+          0 0 18px var(--gold-glow),
+          0 0 6px var(--gold-bright);
+        animation: tickGlowPulse 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
 
       .checkmark:after {
@@ -308,13 +854,26 @@
         top: 4px;
         width: 6px;
         height: 12px;
-        border: solid var(--bg-color);
+        border: solid #09090d;
         border-width: 0 3px 3px 0;
         transform: rotate(45deg);
       }
 
       .checkbox-wrapper input:checked ~ .checkmark:after {
         display: block;
+      }
+
+      @keyframes tickGlowPulse {
+        0% {
+          transform: scale(0.8);
+        }
+        60% {
+          transform: scale(1.18);
+          box-shadow: 0 0 28px var(--gold-bright);
+        }
+        100% {
+          transform: scale(1);
+        }
       }
 
       @keyframes fadeInUp {
@@ -337,22 +896,43 @@
 
       @media (max-width: 768px) {
         header {
-          flex-direction: column;
-          gap: 1rem;
-          padding: 1rem;
+          padding: 0.85rem 1rem;
         }
+        .brand h1 {
+          font-size: 1.15rem;
+        }
+        .section-nav-bar {
+          padding: 0.7rem 1rem;
+        }
+        .tabs-wrapper {
+          padding: 0 1rem;
+        }
+        .sections-grid,
         .grid-container {
           grid-template-columns: 1fr;
         }
         main {
-          padding: 1.5rem 1rem;
+          padding: 1.4rem 1rem 2.5rem;
         }
       }
     </style>
   </head>
   <body>
+    <!-- Smooth 2-3s Intro Animation Overlay -->
+    <div id="introOverlay" aria-hidden="true">
+      <div class="intro-crest">
+        <span>S</span>
+      </div>
+      <div class="intro-title">Syllabus Progress Tracker</div>
+      <div class="intro-subtitle">Royal Gold Edition</div>
+      <div class="intro-progress-track">
+        <div class="intro-progress-bar"></div>
+      </div>
+    </div>
+
     <header>
-      <div class="brand">
+      <div class="brand" onclick="window.openHomeView()" title="Go to Main Sections">
+        <div class="brand-emblem">S</div>
         <h1>Syllabus Progress Tracker</h1>
       </div>
       <div class="controls">
@@ -412,27 +992,68 @@
       </div>
     </header>
 
-    <div class="tabs-wrapper">
-      <div class="tabs-container" id="tabsContainer">
-        <!-- Main Tabs injected here -->
+    <!-- Navigation bar shown when inside a section -->
+    <div class="section-nav-bar" id="sectionNavBar">
+      <div class="nav-left">
+        <button
+          type="button"
+          class="btn-back"
+          id="backToMainBtn"
+          onclick="window.openHomeView()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back
+        </button>
+        <div class="active-section-crumb">
+          <span id="activeSectionName">Section</span>
+          <span class="crumb-sep">/</span>
+          <span id="activeSubjectCrumb" style="color: var(--gold-primary)">Subject</span>
+        </div>
       </div>
     </div>
 
-    <div
-      class="tabs-wrapper odisha-wrapper"
-      id="odishaWrapper"
-      style="display: none"
-    >
-      <div class="tabs-container" id="odishaTabsContainer">
-        <!-- Odisha Tabs injected here -->
+    <!-- Subject tabs inside the opened section -->
+    <div class="tabs-wrapper" id="tabsWrapper">
+      <div class="tabs-container" id="tabsContainer">
+        <!-- Subject Tabs injected here -->
       </div>
     </div>
 
     <main>
-      <h2 class="subject-title" id="currentSubjectTitle">Select a Subject</h2>
-      <div class="grid-container" id="chaptersGrid">
-        <!-- Chapter cards injected here -->
-      </div>
+      <!-- Main Page: 5 Distinct Sections -->
+      <section id="homeSectionsView">
+        <div class="home-hero">
+          <h2 class="home-hero-title">Master Syllabus Sections</h2>
+          <p class="home-hero-sub">Select a section below to open its subjects and track chapter completion</p>
+        </div>
+        <div class="sections-grid" id="sectionsGrid">
+          <!-- 5 Section Cards injected here -->
+        </div>
+      </section>
+
+      <!-- Section Page: Subject Title & Chapter Grid -->
+      <section id="subjectChaptersView">
+        <div class="subject-header-row">
+          <h2 class="subject-title" id="currentSubjectTitle">Select a Subject</h2>
+          <div class="subject-progress-pill" id="subjectProgressPill">0 / 0 Completed</div>
+        </div>
+        <div class="grid-container" id="chaptersGrid">
+          <!-- Chapter cards injected here -->
+        </div>
+      </section>
     </main>
 
     <script type="module">
@@ -548,21 +1169,47 @@
           "Sports",
           "National and International Organizations",
         ],
-        Science: [
-          "Nutrients",
+        "Current Affairs": [
+          "Nov 2026",
+          "Oct 2026",
+          "Sept 2026",
+          "Aug 2026",
+          "July 2026",
+          "June 2026",
+          "May 2026",
+          "Apr 2026",
+        ],
+        Biology: [
           "Cell",
-          "Circulation",
-          "Excretion",
+          "Tissue",
+          "Kingdom",
+          "Nervous System",
+          "Hormones & Plant Movement",
           "Reproduction",
-          "Respiration",
-          "Ecosystem",
+          "Digestion & Respiration",
+          "Circulation & Excretion",
           "Diseases",
-          "Animal Kingdom",
-          "Chemical names and Formulas",
+          "Nutrition",
+          "Heredity & Evolution",
+        ],
+        Physics: [
+          "Motion",
+          "Force & Laws of Motion",
+          "Gravitation & Work Done",
+          "Sound",
+          "Optics",
+          "Human Eye",
+          "Electricity",
+          "Magnetic Effect of Electric Current",
+        ],
+        Chemistry: [
+          "Matter",
+          "Atom & Its Structure",
           "Periodic Table",
-          "Acids, Bases and Salts",
-          "Metals and Nonmetals",
           "Chemical Reactions",
+          "Metals & Non-Metals",
+          "Acids, Bases & Salts",
+          "Carbon & Its Compounds",
         ],
         English: [
           "Nouns",
@@ -653,7 +1300,7 @@
           "Decision Making",
           "Data Sufficiency",
         ],
-        Computer: [
+        "Computer Aptitude": [
           "E-Mail",
           "Memory",
           "MS Word",
@@ -693,12 +1340,6 @@
           "Freedom Struggle in Odisha",
           "Formation of Odisha",
           "Tribal and Social Movements in Odisha",
-        ],
-        "Odisha Polity": [
-          "Administrative Set-up of Odisha",
-          "Judiciary in Odisha",
-          "Local Self-Govt in Odisha",
-          "District Profile of Odisha",
         ],
         "Odisha Economics": [
           "Industries of Odisha",
@@ -749,114 +1390,311 @@
         );
       }
 
-      const mainSubjectsList = [
-        "Indian Geography",
-        "Indian Ancient History",
-        "Indian Medieval History",
-        "Indian Modern History",
-        "Indian Polity",
-        "Indian Economics",
-        "Static GK",
-        "Science",
-        "English",
-        "Mathematics",
-        "Reasoning",
-        "Computer",
+      const sectionsConfig = [
+        {
+          id: "indian-gs",
+          number: "Section I",
+          title: "Indian General Studies",
+          subjects: [
+            "Indian Geography",
+            "Indian Ancient History",
+            "Indian Medieval History",
+            "Indian Modern History",
+            "Indian Polity",
+            "Indian Economics",
+            "Static GK",
+            "Current Affairs",
+          ],
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+        },
+        {
+          id: "general-science",
+          number: "Section II",
+          title: "General Science",
+          subjects: ["Biology", "Physics", "Chemistry"],
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" y1="16" x2="18.48" y2="16"/></svg>`,
+        },
+        {
+          id: "eng-math-reas",
+          number: "Section III",
+          title: "English, Mathematics & Reasoning",
+          subjects: ["English", "Mathematics", "Reasoning"],
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
+        },
+        {
+          id: "computer-aptitude",
+          number: "Section IV",
+          title: "Computer Aptitude",
+          subjects: ["Computer Aptitude"],
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+        },
+        {
+          id: "odisha-specifics",
+          number: "Section V",
+          title: "Odisha Specifics",
+          subjects: [
+            "Odisha Geography",
+            "Odisha History",
+            "Odisha Economics",
+            "Odisha Art, Culture & Misc",
+            "Odia",
+          ],
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+        },
       ];
 
-      const odishaSubjectsList = [
-        "Odisha Geography",
-        "Odisha History",
-        "Odisha Polity",
-        "Odisha Economics",
-        "Odisha Art, Culture & Misc",
-        "Odia",
-      ];
+      const STORAGE_NAV_KEY = "spt_royal_nav_state_v1";
+      const STORAGE_SCROLL_KEY = "spt_royal_scroll_y_v1";
+      const STORAGE_THEME_KEY = "spt_royal_theme_v1";
 
-      let currentSubject = mainSubjectsList[0];
-      // Removed localStorage initialization to strictly rely on cloud state
+      let currentView = "home"; // "home" or "section"
+      let currentSectionId = sectionsConfig[0].id;
+      let currentSubject = sectionsConfig[0].subjects[0];
       let userProgress = {};
 
-      window.switchSubject = function (subject, isOdishaTab = false) {
-        currentSubject = subject;
+      function safeGetStorage(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (e) {
+          return null;
+        }
+      }
 
-        document
-          .querySelectorAll("#tabsContainer .tab-btn")
-          .forEach((btn) => btn.classList.remove("active"));
-        document
-          .querySelectorAll("#odishaTabsContainer .tab-btn")
-          .forEach((btn) => btn.classList.remove("active"));
+      function safeSetStorage(key, val) {
+        try {
+          localStorage.setItem(key, val);
+        } catch (e) {
+          // ignore storage errors in restricted iframes
+        }
+      }
 
-        if (isOdishaTab) {
-          document.getElementById("odishaMainTabBtn").classList.add("active");
-          document.getElementById("odishaWrapper").style.display = "block";
+      function saveNavigationState() {
+        const stateObj = {
+          view: currentView,
+          sectionId: currentSectionId,
+          subject: currentSubject,
+        };
+        safeSetStorage(STORAGE_NAV_KEY, JSON.stringify(stateObj));
+        try {
+          const hash =
+            currentView === "home"
+              ? "#home"
+              : `#${encodeURIComponent(currentSectionId)}/${encodeURIComponent(currentSubject)}`;
+          window.history.replaceState(null, "", hash);
+        } catch (e) {
+          // ignore history errors
+        }
+      }
 
-          document
-            .querySelectorAll("#odishaTabsContainer .tab-btn")
-            .forEach((btn) => {
-              if (btn.textContent === subject) {
-                btn.classList.add("active");
-                btn.scrollIntoView({
-                  behavior: "smooth",
-                  block: "nearest",
-                  inline: "center",
-                });
-              }
-            });
-        } else {
-          document.getElementById("odishaWrapper").style.display = "none";
-
-          document
-            .querySelectorAll("#tabsContainer .tab-btn")
-            .forEach((btn) => {
-              if (btn.textContent === subject) {
-                btn.classList.add("active");
-                btn.scrollIntoView({
-                  behavior: "smooth",
-                  block: "nearest",
-                  inline: "center",
-                });
-              }
-            });
+      function restoreNavigationState() {
+        // First check URL hash if present
+        const rawHash = window.location.hash ? window.location.hash.slice(1) : "";
+        if (rawHash && rawHash !== "home") {
+          const parts = rawHash.split("/").map(decodeURIComponent);
+          const foundSec = sectionsConfig.find((s) => s.id === parts[0]);
+          if (foundSec) {
+            currentView = "section";
+            currentSectionId = foundSec.id;
+            currentSubject =
+              parts[1] && foundSec.subjects.includes(parts[1])
+                ? parts[1]
+                : foundSec.subjects[0];
+            return;
+          }
         }
 
-        document.getElementById("currentSubjectTitle").textContent = subject;
-        renderChapters();
+        const savedRaw = safeGetStorage(STORAGE_NAV_KEY);
+        if (savedRaw) {
+          try {
+            const parsed = JSON.parse(savedRaw);
+            if (parsed.view === "section") {
+              const foundSec = sectionsConfig.find(
+                (s) => s.id === parsed.sectionId,
+              );
+              if (foundSec) {
+                currentView = "section";
+                currentSectionId = foundSec.id;
+                currentSubject = foundSec.subjects.includes(parsed.subject)
+                  ? parsed.subject
+                  : foundSec.subjects[0];
+                return;
+              }
+            }
+          } catch (e) {
+            // fallback to home
+          }
+        }
+        currentView = "home";
+      }
+
+      function normalizeComputerProgress() {
+        // Ensure seamless compatibility between legacy "Computer" key and "Computer Aptitude"
+        if (
+          userProgress["Computer"] &&
+          !userProgress["Computer Aptitude"]
+        ) {
+          userProgress["Computer Aptitude"] = { ...userProgress["Computer"] };
+        } else if (
+          userProgress["Computer Aptitude"] &&
+          !userProgress["Computer"]
+        ) {
+          userProgress["Computer"] = { ...userProgress["Computer Aptitude"] };
+        }
+      }
+
+      function getSubjectStats(subject) {
+        const chapters = syllabusData[subject] || [];
+        const total = chapters.length;
+        let completed = 0;
+        const subjProg = userProgress[subject] || {};
+        for (let i = 0; i < total; i++) {
+          if (subjProg[i]) completed++;
+        }
+        return { completed, total };
+      }
+
+      function getSectionStats(section) {
+        let completed = 0;
+        let total = 0;
+        section.subjects.forEach((subj) => {
+          const st = getSubjectStats(subj);
+          completed += st.completed;
+          total += st.total;
+        });
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+        return { completed, total, percent };
+      }
+
+      function renderSectionsGrid() {
+        const grid = document.getElementById("sectionsGrid");
+        grid.innerHTML = "";
+
+        sectionsConfig.forEach((section, idx) => {
+          const stats = getSectionStats(section);
+          const card = document.createElement("div");
+          card.className = "section-card";
+          card.style.animationDelay = `${idx * 0.06}s`;
+          card.onclick = () => window.openSection(section.id);
+
+          const pillsHtml = section.subjects
+            .map((s) => `<span class="subject-pill">${s}</span>`)
+            .join("");
+
+          card.innerHTML = `
+            <div>
+              <div class="section-card-top">
+                <span class="section-badge">${section.number}</span>
+                <div class="section-icon-box">${section.icon}</div>
+              </div>
+              <h3 class="section-card-title">${section.title}</h3>
+            </div>
+            <div class="section-subjects-pills">
+              ${pillsHtml}
+            </div>
+            <div class="section-card-footer">
+              <div class="section-stats-row">
+                <span>${stats.completed} / ${stats.total} Chapters (${stats.percent}%)</span>
+                <span class="section-open-cta">Open Section &rarr;</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: ${stats.percent}%"></div>
+              </div>
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+      }
+
+      window.openHomeView = function () {
+        currentView = "home";
+        saveNavigationState();
+        safeSetStorage(STORAGE_SCROLL_KEY, "0");
+
+        document.getElementById("sectionNavBar").style.display = "none";
+        document.getElementById("tabsWrapper").style.display = "none";
+        document.getElementById("subjectChaptersView").style.display = "none";
+        document.getElementById("homeSectionsView").style.display = "block";
+
+        renderSectionsGrid();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
-      function renderTabs() {
+      window.openSection = function (sectionId, specificSubject = null, preserveScroll = false) {
+        const section = sectionsConfig.find((s) => s.id === sectionId);
+        if (!section) return;
+
+        currentView = "section";
+        currentSectionId = section.id;
+        currentSubject =
+          specificSubject && section.subjects.includes(specificSubject)
+            ? specificSubject
+            : section.subjects[0];
+
+        saveNavigationState();
+
+        document.getElementById("homeSectionsView").style.display = "none";
+        document.getElementById("sectionNavBar").style.display = "flex";
+        document.getElementById("tabsWrapper").style.display =
+          section.subjects.length > 1 ? "block" : "none";
+        document.getElementById("subjectChaptersView").style.display = "block";
+
+        document.getElementById("activeSectionName").textContent = section.title;
+
+        renderSectionTabs(section);
+        window.switchSubject(currentSubject, preserveScroll);
+      };
+
+      function renderSectionTabs(section) {
         const container = document.getElementById("tabsContainer");
         container.innerHTML = "";
 
-        mainSubjectsList.forEach((subject) => {
+        section.subjects.forEach((subject) => {
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "tab-btn";
+          btn.dataset.subject = subject;
           btn.textContent = subject;
           btn.onclick = () => window.switchSubject(subject, false);
           container.appendChild(btn);
         });
+      }
 
-        const odishaMainBtn = document.createElement("button");
-        odishaMainBtn.type = "button";
-        odishaMainBtn.className = "tab-btn";
-        odishaMainBtn.id = "odishaMainTabBtn";
-        odishaMainBtn.textContent = "Odisha Specifics";
-        odishaMainBtn.onclick = () =>
-          window.switchSubject(odishaSubjectsList[0], true);
-        container.appendChild(odishaMainBtn);
+      window.switchSubject = function (subject, preserveScroll = false) {
+        currentSubject = subject;
+        saveNavigationState();
 
-        const odishaContainer = document.getElementById("odishaTabsContainer");
-        odishaContainer.innerHTML = "";
+        document.getElementById("activeSubjectCrumb").textContent = subject;
 
-        odishaSubjectsList.forEach((subject) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "tab-btn";
-          btn.textContent = subject;
-          btn.onclick = () => window.switchSubject(subject, true);
-          odishaContainer.appendChild(btn);
-        });
+        document
+          .querySelectorAll("#tabsContainer .tab-btn")
+          .forEach((btn) => {
+            if (btn.dataset.subject === subject) {
+              btn.classList.add("active");
+              btn.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+              });
+            } else {
+              btn.classList.remove("active");
+            }
+          });
+
+        document.getElementById("currentSubjectTitle").textContent = subject;
+        renderChapters();
+
+        if (!preserveScroll) {
+          safeSetStorage(STORAGE_SCROLL_KEY, "0");
+        }
+      };
+
+      function updateSubjectProgressHeader() {
+        const pill = document.getElementById("subjectProgressPill");
+        if (!pill) return;
+        const stats = getSubjectStats(currentSubject);
+        const pct = stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0;
+        pill.textContent = `${stats.completed} / ${stats.total} Completed (${pct}%)`;
       }
 
       function renderChapters() {
@@ -864,8 +1702,9 @@
         grid.innerHTML = "";
 
         const chapters = syllabusData[currentSubject];
-
         if (!chapters) return;
+
+        updateSubjectProgressHeader();
 
         chapters.forEach((chapter, index) => {
           const isChecked =
@@ -875,20 +1714,20 @@
 
           const card = document.createElement("div");
           card.className = `chapter-card ${isChecked ? "completed" : ""}`;
-          card.style.animationDelay = `${index * 0.03}s`;
+          card.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
           card.onclick = (e) =>
             window.toggleChapter(e, currentSubject, index, card);
 
           card.innerHTML = `
-                    <div class="chapter-info">
-                        <span class="serial-number">${String(index + 1).padStart(2, "0")}.</span>
-                        <span class="chapter-name">${chapter}</span>
-                    </div>
-                    <label class="checkbox-wrapper" onclick="event.stopPropagation()">
-                        <input type="checkbox" id="chk-${currentSubject}-${index}" ${isChecked ? "checked" : ""} onchange="window.toggleChapterCheckbox('${currentSubject}', ${index}, this, this.closest('.chapter-card'))">
-                        <span class="checkmark"></span>
-                    </label>
-                `;
+            <div class="chapter-info">
+              <span class="serial-number">${String(index + 1).padStart(2, "0")}.</span>
+              <span class="chapter-name">${chapter}</span>
+            </div>
+            <label class="checkbox-wrapper" onclick="event.stopPropagation()">
+              <input type="checkbox" id="chk-${currentSubject}-${index}" ${isChecked ? "checked" : ""} onchange="window.toggleChapterCheckbox('${currentSubject}', ${index}, this, this.closest('.chapter-card'))">
+              <span class="checkmark"></span>
+            </label>
+          `;
 
           grid.appendChild(card);
         });
@@ -926,7 +1765,12 @@
         if (!userProgress[subject]) userProgress[subject] = {};
         userProgress[subject][index] = isCompleted;
 
-        // localStorage saving completely removed to rely on Supabase
+        if (subject === "Computer Aptitude") {
+          if (!userProgress["Computer"]) userProgress["Computer"] = {};
+          userProgress["Computer"][index] = isCompleted;
+        }
+
+        updateSubjectProgressHeader();
 
         if (currentUser) {
           const chapterName = syllabusData[subject][index];
@@ -948,6 +1792,7 @@
         const currentTheme = html.getAttribute("data-theme");
         const newTheme = currentTheme === "dark" ? "light" : "dark";
         html.setAttribute("data-theme", newTheme);
+        safeSetStorage(STORAGE_THEME_KEY, newTheme);
         updateThemeIcons();
       };
 
@@ -974,8 +1819,11 @@
             document.getElementById("authBtn").textContent =
               "Sign In with GitHub";
             userProgress = {};
-            // localStorage clearing completely removed
-            renderChapters();
+            if (currentView === "home") {
+              renderSectionsGrid();
+            } else {
+              renderChapters();
+            }
           }
         } else {
           await supabase.auth.signInWithOAuth({
@@ -988,7 +1836,7 @@
       };
 
       async function loadUserData(userId) {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from("user_progress")
           .select("progress_data")
           .eq("user_id", userId)
@@ -996,8 +1844,12 @@
 
         if (data && data.progress_data) {
           userProgress = data.progress_data;
-          // localStorage populating completely removed
-          renderChapters();
+          normalizeComputerProgress();
+          if (currentView === "home") {
+            renderSectionsGrid();
+          } else {
+            renderChapters();
+          }
         }
       }
 
@@ -1012,16 +1864,59 @@
             document.getElementById("authBtn").textContent =
               "Sign In with GitHub";
             userProgress = {};
-            // localStorage clearing completely removed
-            renderChapters();
+            if (currentView === "home") {
+              renderSectionsGrid();
+            } else {
+              renderChapters();
+            }
           }
         });
       }
 
+      // Persist scroll position so refreshing stays in the exact same region
+      let scrollTicking = false;
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!scrollTicking) {
+            window.requestAnimationFrame(() => {
+              safeSetStorage(STORAGE_SCROLL_KEY, String(window.scrollY || 0));
+              scrollTicking = false;
+            });
+            scrollTicking = true;
+          }
+        },
+        { passive: true },
+      );
+
       window.onload = () => {
-        renderTabs();
-        window.switchSubject(currentSubject, false);
+        const savedTheme = safeGetStorage(STORAGE_THEME_KEY);
+        if (savedTheme === "light" || savedTheme === "dark") {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
         updateThemeIcons();
+
+        const savedScrollY = parseInt(safeGetStorage(STORAGE_SCROLL_KEY) || "0", 10);
+        restoreNavigationState();
+
+        if (currentView === "section") {
+          window.openSection(currentSectionId, currentSubject, true);
+        } else {
+          renderSectionsGrid();
+        }
+
+        if (!isNaN(savedScrollY) && savedScrollY > 0) {
+          setTimeout(() => {
+            window.scrollTo(0, savedScrollY);
+          }, 60);
+        }
+
+        // Remove intro overlay from DOM after animation finishes (2.7s)
+        setTimeout(() => {
+          const intro = document.getElementById("introOverlay");
+          if (intro) intro.style.display = "none";
+        }, 2700);
+
         checkSession();
       };
     </script>
