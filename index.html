@@ -1,253 +1,47 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Syllabus Progress Tracker</title>
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23FFF3B0'/><stop offset='50%' stop-color='%23FFD700'/><stop offset='100%' stop-color='%23B8860B'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='%230b0b0f' stroke='url(%23g)' stroke-width='6'/><text y='72' font-size='64' font-family='Georgia, serif' font-weight='bold' fill='url(%23g)' x='50' text-anchor='middle'>S</text></svg>"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&display=swap"
-      rel="stylesheet"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text y='70' font-size='60' font-family='Arial, sans-serif' font-weight='bold' fill='%23ffffff' x='50' text-anchor='middle'>S</text></svg>"
     />
     <style>
-      @font-face {
-        font-family: "Royal Enigma";
-        src: local("Royal Enigma"), local("Cinzel Decorative Bold"), local("Cinzel Bold");
-        font-weight: 700;
-        font-style: normal;
-      }
-
       :root {
-        --bg-color: #09090d;
-        --bg-radial: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.09) 0%, rgba(184, 134, 11, 0.03) 35%, transparent 70%);
-        --surface-color: #12121a;
-        --surface-elevated: #181824;
-        --surface-border: rgba(212, 175, 55, 0.24);
-        --surface-border-strong: rgba(255, 215, 0, 0.55);
-        --text-primary: #fdfbf7;
-        --text-secondary: #c8b88a;
-        --text-muted: #8e805e;
-        --gold-primary: #ffd700;
-        --gold-bright: #fff1a8;
-        --gold-metallic: #d4af37;
-        --gold-deep: #996515;
-        --gold-gradient: linear-gradient(135deg, #fff3b0 0%, #ffd700 35%, #d4af37 70%, #996515 100%);
-        --gold-text-gradient: linear-gradient(180deg, #fff8d6 0%, #ffd700 50%, #c59b27 100%);
-        --gold-glow: rgba(255, 215, 0, 0.48);
-        --gold-soft-glow: rgba(212, 175, 55, 0.22);
-        --header-bg: rgba(9, 9, 13, 0.88);
-        --card-hover: #191926;
-        --card-completed-bg: linear-gradient(145deg, rgba(255, 215, 0, 0.11) 0%, rgba(18, 18, 26, 0.96) 65%);
-        --shimmer-color: rgba(255, 241, 168, 0.22);
-      }
-
-      [data-theme="light"] {
-        --bg-color: #faf7f0;
-        --bg-radial: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0.04) 40%, transparent 75%);
+        --bg-color: #f8fafc;
         --surface-color: #ffffff;
-        --surface-elevated: #fffdf7;
-        --surface-border: rgba(184, 134, 11, 0.28);
-        --surface-border-strong: rgba(184, 134, 11, 0.7);
-        --text-primary: #1c1608;
-        --text-secondary: #6e551c;
-        --text-muted: #947a3b;
-        --gold-primary: #c59300;
-        --gold-bright: #ffd700;
-        --gold-metallic: #b8860b;
-        --gold-deep: #7a5805;
-        --gold-gradient: linear-gradient(135deg, #ffe680 0%, #d4af37 45%, #b8860b 85%, #8a6200 100%);
-        --gold-text-gradient: linear-gradient(180deg, #b8860b 0%, #996515 60%, #6b4700 100%);
-        --gold-glow: rgba(212, 175, 55, 0.42);
-        --gold-soft-glow: rgba(184, 134, 11, 0.18);
-        --header-bg: rgba(250, 247, 240, 0.92);
-        --card-hover: #fff9eb;
-        --card-completed-bg: linear-gradient(145deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 255, 255, 0.98) 70%);
-        --shimmer-color: rgba(212, 175, 55, 0.25);
+        --surface-elevated: #f1f5f9;
+        --surface-border: #e2e8f0;
+        --surface-border-strong: #cbd5e1;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        --accent-primary: #2563eb;
+        --accent-hover: #1d4ed8;
+        --accent-soft: #eff6ff;
+        --accent-border: #bfdbfe;
+        --header-bg: #ffffff;
+        --card-hover: #f8fafc;
+        --card-completed-bg: #eff6ff;
       }
 
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: "Calibri", "Carlito", "Segoe UI", "Arial", sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
       }
 
       body {
         background-color: var(--bg-color);
-        background-image: var(--bg-radial);
-        background-attachment: fixed;
         color: var(--text-primary);
         overflow-x: hidden;
         min-height: 100vh;
-        transition:
-          background-color 0.3s ease,
-          color 0.3s ease;
-      }
-
-      /* Intro Splash Screen Animation (2.4 seconds) */
-      #introOverlay {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        background: radial-gradient(circle at center, #17140a 0%, #07070a 75%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        pointer-events: all;
-        animation: introFadeOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) 2.1s forwards;
-      }
-
-      .intro-crest {
-        width: 86px;
-        height: 86px;
-        border-radius: 24px;
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.18), rgba(184, 134, 11, 0.05));
-        border: 2px solid #d4af37;
-        box-shadow:
-          0 0 30px rgba(255, 215, 0, 0.45),
-          inset 0 0 20px rgba(255, 215, 0, 0.25);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        position: relative;
-        overflow: hidden;
-        animation: crestPulse 1.8s ease-in-out infinite alternate, introScaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-
-      .intro-crest::after {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -120%;
-        width: 80%;
-        height: 200%;
-        background: linear-gradient(90deg, transparent, rgba(255, 248, 214, 0.65), transparent);
-        transform: rotate(25deg);
-        animation: introSweep 1.6s ease-in-out 0.25s forwards;
-      }
-
-      .intro-crest span {
-        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
-        font-size: 2.8rem;
-        font-weight: 900;
-        background: linear-gradient(180deg, #fff8d6 0%, #ffd700 55%, #b8860b 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
-      }
-
-      .intro-title {
-        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
-        font-size: clamp(1.6rem, 4vw, 2.7rem);
-        font-weight: 800;
-        text-align: center;
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        background: linear-gradient(90deg, #c59b27 0%, #fff3b0 30%, #ffd700 50%, #fff3b0 70%, #b8860b 100%);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0.6rem;
-        opacity: 0;
-        animation:
-          introTextReveal 0.7s ease 0.2s forwards,
-          goldTextShine 2.4s linear infinite;
-      }
-
-      .intro-subtitle {
-        color: #c8b88a;
-        font-size: 0.95rem;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        margin-bottom: 1.8rem;
-        opacity: 0;
-        animation: introTextReveal 0.7s ease 0.4s forwards;
-      }
-
-      .intro-progress-track {
-        width: min(280px, 75vw);
-        height: 4px;
-        background: rgba(212, 175, 55, 0.18);
-        border-radius: 999px;
-        overflow: hidden;
-        box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
-      }
-
-      .intro-progress-bar {
-        height: 100%;
-        width: 0%;
-        background: linear-gradient(90deg, #b8860b, #ffd700, #fff8d6, #ffd700);
-        border-radius: 999px;
-        box-shadow: 0 0 15px #ffd700;
-        animation: introBarFill 1.95s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
-      }
-
-      @keyframes introScaleIn {
-        from {
-          opacity: 0;
-          transform: scale(0.75) translateY(12px);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-      }
-
-      @keyframes introTextReveal {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes introSweep {
-        to {
-          left: 160%;
-        }
-      }
-
-      @keyframes introBarFill {
-        0% {
-          width: 0%;
-        }
-        100% {
-          width: 100%;
-        }
-      }
-
-      @keyframes introFadeOut {
-        to {
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: none;
-        }
-      }
-
-      @keyframes crestPulse {
-        from {
-          box-shadow: 0 0 22px rgba(255, 215, 0, 0.35), inset 0 0 14px rgba(255, 215, 0, 0.2);
-        }
-        to {
-          box-shadow: 0 0 38px rgba(255, 215, 0, 0.65), inset 0 0 24px rgba(255, 215, 0, 0.35);
-        }
-      }
-
-      @keyframes goldTextShine {
-        to {
-          background-position: 200% center;
-        }
+        line-height: 1.5;
       }
 
       /* Header */
@@ -256,11 +50,8 @@
         top: 0;
         z-index: 100;
         background-color: var(--header-bg);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
         border-bottom: 1px solid var(--surface-border);
-        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
-        padding: 0.9rem 2rem;
+        padding: 0.85rem 2rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -269,127 +60,61 @@
       .brand {
         display: flex;
         align-items: center;
-        gap: 0.85rem;
+        gap: 0.75rem;
         cursor: pointer;
         user-select: none;
       }
 
       .brand-emblem {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: var(--gold-gradient);
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background-color: var(--accent-primary);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #09090d;
-        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
-        font-weight: 900;
-        font-size: 1.35rem;
-        box-shadow: 0 0 15px var(--gold-glow);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1.1rem;
         flex-shrink: 0;
       }
 
       .brand h1 {
-        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
-        font-size: 1.45rem;
-        font-weight: 800;
-        background: var(--gold-text-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 8px var(--gold-soft-glow));
-        letter-spacing: 1px;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
       }
 
       .controls {
         display: flex;
-        gap: 0.9rem;
+        gap: 0.75rem;
         align-items: center;
-        position: relative;
       }
 
       button {
         cursor: pointer;
         border: none;
         outline: none;
-        border-radius: 10px;
-        padding: 0.6rem 1.25rem;
-        font-weight: bold;
-        font-size: 0.92rem;
-        position: relative;
-        overflow: hidden;
+        border-radius: 8px;
+        padding: 0.55rem 1.1rem;
+        font-weight: 600;
+        font-size: 0.9rem;
         transition:
-          transform 0.22s ease,
-          box-shadow 0.25s ease,
-          border-color 0.25s ease,
-          background-color 0.25s ease,
-          color 0.25s ease;
+          background-color 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
       }
 
       .btn-auth {
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(212, 175, 55, 0.04));
-        color: var(--gold-primary);
-        border: 1px solid var(--gold-metallic);
-        box-shadow: 0 0 10px var(--gold-soft-glow);
-        letter-spacing: 0.4px;
-      }
-
-      .btn-auth::before,
-      .btn-back::before,
-      .tab-btn::before,
-      .section-card::before,
-      .chapter-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -110%;
-        width: 65%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--shimmer-color),
-          transparent
-        );
-        transform: skewX(-22deg);
-        transition: left 0.55s ease;
-        pointer-events: none;
-      }
-
-      .btn-auth:hover::before,
-      .btn-back:hover::before,
-      .tab-btn:hover::before,
-      .section-card:hover::before,
-      .chapter-card:hover::before {
-        left: 135%;
+        background-color: var(--accent-primary);
+        color: #ffffff;
+        border: 1px solid var(--accent-primary);
       }
 
       .btn-auth:hover {
-        background: var(--gold-gradient);
-        color: #09090d;
-        border-color: var(--gold-bright);
-        box-shadow: 0 0 20px var(--gold-glow);
-        transform: translateY(-1px);
-      }
-
-      .btn-theme {
-        background-color: var(--surface-color);
-        color: var(--gold-primary);
-        border: 1px solid var(--surface-border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 42px;
-        height: 42px;
-        padding: 0;
-        border-radius: 50%;
-        box-shadow: 0 0 8px var(--gold-soft-glow);
-      }
-
-      .btn-theme:hover {
-        border-color: var(--gold-primary);
-        box-shadow: 0 0 18px var(--gold-glow);
-        transform: rotate(12deg) scale(1.05);
+        background-color: var(--accent-hover);
+        border-color: var(--accent-hover);
       }
 
       /* Sub-navigation / Back Bar & Subject Tabs */
@@ -408,50 +133,45 @@
       .nav-left {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 0.85rem;
         flex-wrap: wrap;
       }
 
       .btn-back {
         display: inline-flex;
         align-items: center;
-        gap: 0.45rem;
-        padding: 0.48rem 1rem;
-        font-size: 0.9rem;
-        font-weight: 700;
-        border-radius: 8px;
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.14), rgba(212, 175, 55, 0.05));
-        color: var(--gold-primary);
-        border: 1px solid var(--gold-metallic);
-        box-shadow: 0 0 10px var(--gold-soft-glow);
+        gap: 0.4rem;
+        padding: 0.45rem 0.9rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 6px;
+        background-color: var(--surface-color);
+        color: var(--text-primary);
+        border: 1px solid var(--surface-border-strong);
       }
 
       .btn-back:hover {
-        background: var(--gold-gradient);
-        color: #09090d;
-        border-color: var(--gold-bright);
-        box-shadow: 0 0 18px var(--gold-glow);
-        transform: translateX(-2px);
+        background-color: var(--surface-elevated);
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
       }
 
       .active-section-crumb {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: var(--text-secondary);
-        font-weight: 700;
-        letter-spacing: 0.6px;
-        text-transform: uppercase;
+        font-weight: 600;
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
 
       .active-section-crumb span.crumb-sep {
-        color: var(--gold-metallic);
+        color: var(--text-muted);
       }
 
       .tabs-wrapper {
         width: 100%;
-        background-color: var(--surface-elevated);
+        background-color: var(--surface-color);
         border-bottom: 1px solid var(--surface-border);
         padding: 0 2rem;
         display: none;
@@ -462,8 +182,8 @@
         overflow-x: auto;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        gap: 0.75rem;
-        padding: 0.75rem 0;
+        gap: 0.5rem;
+        padding: 0.65rem 0;
       }
 
       .tabs-container::-webkit-scrollbar {
@@ -471,35 +191,32 @@
       }
 
       .tab-btn {
-        background: var(--surface-color);
+        background-color: var(--surface-elevated);
         color: var(--text-secondary);
         white-space: nowrap;
-        padding: 0.68rem 1.35rem;
-        border-radius: 9px;
-        font-size: 0.98rem;
-        border: 1px solid var(--surface-border);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border: 1px solid transparent;
       }
 
       .tab-btn:hover {
-        color: var(--gold-primary);
-        background-color: var(--card-hover);
-        border-color: var(--gold-metallic);
-        box-shadow: 0 0 14px var(--gold-soft-glow);
-        transform: translateY(-1px);
+        color: var(--text-primary);
+        background-color: #e2e8f0;
       }
 
       .tab-btn.active {
-        color: #09090d;
-        background: var(--gold-gradient);
-        border: 1px solid var(--gold-bright);
-        box-shadow: 0 0 18px var(--gold-glow);
-        font-weight: 800;
+        color: #ffffff;
+        background-color: var(--accent-primary);
+        border-color: var(--accent-primary);
+        font-weight: 600;
       }
 
       /* Main Container */
       main {
-        padding: 2.2rem 2rem 3.5rem;
-        max-width: 1400px;
+        padding: 2rem 2rem 3.5rem;
+        max-width: 1280px;
         margin: 0 auto;
         min-height: 75vh;
       }
@@ -510,62 +227,46 @@
       }
 
       .home-hero {
-        text-align: center;
-        margin-bottom: 2.4rem;
-        animation: fadeInDown 0.45s ease forwards;
+        text-align: left;
+        margin-bottom: 1.75rem;
       }
 
       .home-hero-title {
-        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
-        font-size: clamp(2rem, 4vw, 3rem);
-        font-weight: 900;
-        background: var(--gold-text-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 14px var(--gold-soft-glow));
-        letter-spacing: 1.5px;
-        margin-bottom: 0.5rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.35rem;
       }
 
       .home-hero-sub {
         color: var(--text-secondary);
-        font-size: 1.05rem;
-        letter-spacing: 0.6px;
+        font-size: 0.95rem;
       }
 
       .sections-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-        gap: 1.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.25rem;
       }
 
       .section-card {
-        background: linear-gradient(155deg, var(--surface-elevated) 0%, var(--surface-color) 100%);
+        background-color: var(--surface-color);
         border: 1px solid var(--surface-border);
-        border-radius: 16px;
-        padding: 1.85rem;
+        border-radius: 10px;
+        padding: 1.5rem;
         cursor: pointer;
-        position: relative;
-        overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: 1.35rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        gap: 1.25rem;
         transition:
-          transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-          border-color 0.28s ease,
-          box-shadow 0.28s ease;
-        animation: fadeInUp 0.45s ease forwards;
-        opacity: 0;
+          border-color 0.15s ease,
+          background-color 0.15s ease;
       }
 
       .section-card:hover {
-        border-color: var(--gold-primary);
-        box-shadow:
-          0 12px 30px rgba(0, 0, 0, 0.35),
-          0 0 24px var(--gold-glow);
-        transform: translateY(-5px);
+        border-color: var(--accent-primary);
+        background-color: var(--card-hover);
       }
 
       .section-card-top {
@@ -579,62 +280,58 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 0.32rem 0.75rem;
-        border-radius: 999px;
-        background: rgba(255, 215, 0, 0.12);
-        border: 1px solid var(--gold-metallic);
-        color: var(--gold-primary);
-        font-size: 0.8rem;
-        font-weight: 800;
-        letter-spacing: 1px;
+        padding: 0.25rem 0.65rem;
+        border-radius: 6px;
+        background-color: var(--accent-soft);
+        border: 1px solid var(--accent-border);
+        color: var(--accent-primary);
+        font-size: 0.75rem;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 0.04em;
       }
 
       .section-icon-box {
-        width: 46px;
-        height: 46px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(184, 134, 11, 0.05));
-        border: 1px solid var(--gold-metallic);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: var(--accent-soft);
+        border: 1px solid var(--accent-border);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--gold-primary);
-        box-shadow: 0 0 14px var(--gold-soft-glow);
+        color: var(--accent-primary);
         flex-shrink: 0;
       }
 
       .section-card-title {
-        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
-        font-size: 1.55rem;
-        font-weight: 800;
-        background: var(--gold-text-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        line-height: 1.3;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.35;
         margin-top: 0.65rem;
       }
 
       .section-subjects-pills {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.45rem;
+        gap: 0.4rem;
       }
 
       .subject-pill {
-        font-size: 0.84rem;
-        padding: 0.28rem 0.7rem;
+        font-size: 0.8rem;
+        padding: 0.22rem 0.6rem;
         border-radius: 6px;
-        background: rgba(212, 175, 55, 0.1);
+        background-color: var(--surface-elevated);
         border: 1px solid var(--surface-border);
         color: var(--text-secondary);
-        font-weight: 600;
+        font-weight: 500;
       }
 
       .section-card-footer {
         display: flex;
         flex-direction: column;
-        gap: 0.55rem;
+        gap: 0.5rem;
         padding-top: 0.75rem;
         border-top: 1px solid var(--surface-border);
       }
@@ -643,33 +340,32 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: var(--text-secondary);
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .section-open-cta {
-        color: var(--gold-primary);
+        color: var(--accent-primary);
         display: inline-flex;
         align-items: center;
-        gap: 0.35rem;
-        font-weight: 800;
+        gap: 0.3rem;
+        font-weight: 600;
       }
 
       .progress-track {
         width: 100%;
         height: 6px;
-        background: rgba(212, 175, 55, 0.14);
+        background-color: var(--surface-elevated);
         border-radius: 999px;
         overflow: hidden;
       }
 
       .progress-fill {
         height: 100%;
-        background: var(--gold-gradient);
+        background-color: var(--accent-primary);
         border-radius: 999px;
-        box-shadow: 0 0 10px var(--gold-glow);
-        transition: width 0.35s ease;
+        transition: width 0.25s ease;
       }
 
       /* Section Details / Subject Chapters View */
@@ -679,132 +375,100 @@
 
       .subject-header-row {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 1rem;
-        margin-bottom: 1.8rem;
+        margin-bottom: 1.5rem;
         padding-bottom: 1rem;
         border-bottom: 1px solid var(--surface-border);
       }
 
       .subject-title {
-        font-family: "Royal Enigma", "Cinzel Decorative", "Cinzel", Georgia, serif;
-        font-size: clamp(1.9rem, 3.6vw, 2.75rem);
-        font-weight: 900;
-        background: var(--gold-text-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 12px var(--gold-soft-glow));
-        letter-spacing: 1.2px;
-        line-height: 1.2;
-        animation: fadeInDown 0.4s ease forwards;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.25;
       }
 
       .subject-progress-pill {
         display: inline-flex;
         align-items: center;
-        gap: 0.6rem;
-        padding: 0.5rem 1.05rem;
+        gap: 0.5rem;
+        padding: 0.4rem 0.9rem;
         border-radius: 999px;
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.14), rgba(212, 175, 55, 0.05));
-        border: 1px solid var(--gold-metallic);
-        color: var(--gold-primary);
-        font-weight: 800;
-        font-size: 0.95rem;
-        box-shadow: 0 0 14px var(--gold-soft-glow);
+        background-color: var(--accent-soft);
+        border: 1px solid var(--accent-border);
+        color: var(--accent-primary);
+        font-weight: 600;
+        font-size: 0.875rem;
       }
 
       .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-        gap: 1.35rem;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 0.85rem;
       }
 
       .chapter-card {
         background-color: var(--surface-color);
         border: 1px solid var(--surface-border);
-        border-radius: 13px;
-        padding: 1.35rem 1.45rem;
+        border-radius: 8px;
+        padding: 1rem 1.15rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1rem;
+        gap: 0.85rem;
         cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        animation: fadeInUp 0.4s ease forwards;
-        opacity: 0;
-        transform: translateY(14px);
         transition:
-          background-color 0.25s ease,
-          border-color 0.25s ease,
-          box-shadow 0.25s ease,
-          transform 0.22s ease;
+          background-color 0.15s ease,
+          border-color 0.15s ease;
       }
 
       .chapter-card:hover {
         background-color: var(--card-hover);
-        border-color: var(--gold-primary);
-        box-shadow:
-          0 6px 18px rgba(0, 0, 0, 0.28),
-          0 0 18px var(--gold-soft-glow);
-        transform: translateY(-3px);
+        border-color: var(--surface-border-strong);
       }
 
       .chapter-card.completed {
-        background: var(--card-completed-bg);
-        border-color: var(--gold-primary);
-        box-shadow:
-          0 0 22px var(--gold-glow),
-          inset 0 0 12px rgba(255, 215, 0, 0.12);
+        background-color: var(--card-completed-bg);
+        border-color: var(--accent-border);
       }
 
       .chapter-info {
         display: flex;
         align-items: flex-start;
-        gap: 0.9rem;
+        gap: 0.75rem;
         flex: 1;
       }
 
       .serial-number {
-        font-weight: 800;
-        color: var(--gold-metallic);
-        font-size: 1.15rem;
-        min-width: 32px;
-        font-family: "Calibri", "Carlito", "Segoe UI", sans-serif;
-        transition: color 0.25s ease, text-shadow 0.25s ease;
+        font-weight: 600;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        min-width: 28px;
       }
 
-      .chapter-card:hover .serial-number,
       .chapter-card.completed .serial-number {
-        color: var(--gold-primary);
-        text-shadow: 0 0 10px var(--gold-glow);
+        color: var(--accent-primary);
       }
 
       .chapter-name {
-        font-family: "Calibri", "Carlito", "Segoe UI", "Arial", sans-serif;
-        font-size: 1.12rem;
-        font-weight: 600;
-        line-height: 1.42;
+        font-size: 0.98rem;
+        font-weight: 500;
+        line-height: 1.4;
         color: var(--text-primary);
-        transition: color 0.25s ease, text-shadow 0.25s ease;
       }
 
       .chapter-card.completed .chapter-name {
-        color: var(--gold-bright);
-        text-shadow: 0 0 8px rgba(255, 215, 0, 0.28);
-      }
-
-      [data-theme="light"] .chapter-card.completed .chapter-name {
-        color: var(--gold-deep);
-        text-shadow: none;
+        color: var(--accent-hover);
+        font-weight: 600;
       }
 
       .checkbox-wrapper {
         position: relative;
-        width: 28px;
-        height: 28px;
+        width: 22px;
+        height: 22px;
         flex-shrink: 0;
         cursor: pointer;
       }
@@ -820,42 +484,35 @@
         position: absolute;
         top: 0;
         left: 0;
-        height: 28px;
-        width: 28px;
-        background-color: transparent;
-        border: 2px solid var(--gold-metallic);
-        border-radius: 7px;
+        height: 22px;
+        width: 22px;
+        background-color: var(--surface-color);
+        border: 1.5px solid var(--surface-border-strong);
+        border-radius: 5px;
         transition:
-          background-color 0.25s ease,
-          border-color 0.25s ease,
-          box-shadow 0.25s ease,
-          transform 0.2s ease;
+          background-color 0.15s ease,
+          border-color 0.15s ease;
       }
 
       .chapter-card:hover .checkmark {
-        border-color: var(--gold-primary);
-        box-shadow: 0 0 12px var(--gold-soft-glow);
+        border-color: var(--accent-primary);
       }
 
       .checkbox-wrapper input:checked ~ .checkmark {
-        background: var(--gold-gradient);
-        border-color: var(--gold-bright);
-        box-shadow:
-          0 0 18px var(--gold-glow),
-          0 0 6px var(--gold-bright);
-        animation: tickGlowPulse 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background-color: var(--accent-primary);
+        border-color: var(--accent-primary);
       }
 
       .checkmark:after {
         content: "";
         position: absolute;
         display: none;
-        left: 9px;
-        top: 4px;
-        width: 6px;
-        height: 12px;
-        border: solid #09090d;
-        border-width: 0 3px 3px 0;
+        left: 7px;
+        top: 3px;
+        width: 5px;
+        height: 10px;
+        border: solid #ffffff;
+        border-width: 0 2px 2px 0;
         transform: rotate(45deg);
       }
 
@@ -863,46 +520,15 @@
         display: block;
       }
 
-      @keyframes tickGlowPulse {
-        0% {
-          transform: scale(0.8);
-        }
-        60% {
-          transform: scale(1.18);
-          box-shadow: 0 0 28px var(--gold-bright);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      @keyframes fadeInUp {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes fadeInDown {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
       @media (max-width: 768px) {
         header {
-          padding: 0.85rem 1rem;
+          padding: 0.75rem 1rem;
         }
         .brand h1 {
-          font-size: 1.15rem;
+          font-size: 1.1rem;
         }
         .section-nav-bar {
-          padding: 0.7rem 1rem;
+          padding: 0.65rem 1rem;
         }
         .tabs-wrapper {
           padding: 0 1rem;
@@ -912,26 +538,18 @@
           grid-template-columns: 1fr;
         }
         main {
-          padding: 1.4rem 1rem 2.5rem;
+          padding: 1.25rem 1rem 2.5rem;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Smooth 2-3s Intro Animation Overlay -->
-    <div id="introOverlay" aria-hidden="true">
-      <div class="intro-crest">
-        <span>S</span>
-      </div>
-      <div class="intro-title">Syllabus Progress Tracker</div>
-      <div class="intro-subtitle">Royal Gold Edition</div>
-      <div class="intro-progress-track">
-        <div class="intro-progress-bar"></div>
-      </div>
-    </div>
-
     <header>
-      <div class="brand" onclick="window.openHomeView()" title="Go to Main Sections">
+      <div
+        class="brand"
+        onclick="window.openHomeView()"
+        title="Go to Main Sections"
+      >
         <div class="brand-emblem">S</div>
         <h1>Syllabus Progress Tracker</h1>
       </div>
@@ -943,51 +561,6 @@
           onclick="window.toggleAuth()"
         >
           Sign In with GitHub
-        </button>
-        <button
-          type="button"
-          class="btn-theme"
-          id="themeBtn"
-          onclick="window.toggleTheme()"
-          title="Toggle Theme"
-        >
-          <svg
-            id="moonIcon"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            style="display: none"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-          <svg
-            id="sunIcon"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
         </button>
       </div>
     </header>
@@ -1008,7 +581,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2.5"
+            stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
           >
@@ -1020,7 +593,9 @@
         <div class="active-section-crumb">
           <span id="activeSectionName">Section</span>
           <span class="crumb-sep">/</span>
-          <span id="activeSubjectCrumb" style="color: var(--gold-primary)">Subject</span>
+          <span id="activeSubjectCrumb" style="color: var(--accent-primary)"
+            >Subject</span
+          >
         </div>
       </div>
     </div>
@@ -1037,7 +612,10 @@
       <section id="homeSectionsView">
         <div class="home-hero">
           <h2 class="home-hero-title">Master Syllabus Sections</h2>
-          <p class="home-hero-sub">Select a section below to open its subjects and track chapter completion</p>
+          <p class="home-hero-sub">
+            Select a section below to open its subjects and track chapter
+            completion
+          </p>
         </div>
         <div class="sections-grid" id="sectionsGrid">
           <!-- 5 Section Cards injected here -->
@@ -1047,8 +625,12 @@
       <!-- Section Page: Subject Title & Chapter Grid -->
       <section id="subjectChaptersView">
         <div class="subject-header-row">
-          <h2 class="subject-title" id="currentSubjectTitle">Select a Subject</h2>
-          <div class="subject-progress-pill" id="subjectProgressPill">0 / 0 Completed</div>
+          <h2 class="subject-title" id="currentSubjectTitle">
+            Select a Subject
+          </h2>
+          <div class="subject-progress-pill" id="subjectProgressPill">
+            0 / 0 Completed
+          </div>
         </div>
         <div class="grid-container" id="chaptersGrid">
           <!-- Chapter cards injected here -->
@@ -1301,28 +883,29 @@
           "Data Sufficiency",
         ],
         "Computer Aptitude": [
-          "E-Mail",
+          "Computer Fundamentals & Hardware",
+          "Types of Computer",
+          "Computer Generations",
+          "CPU & Processing",
+          "Number System",
           "Memory",
-          "MS Word",
-          "MS Excel",
-          "MS PowerPoint",
-          "MS Access",
-          "Networking: Models",
-          "Networking: Types & Topologies",
-          "Networking: Devices & Protocols",
-          "Networking: IP vs. MAC Addresses",
-          "Internet",
-          "Virus/Malware",
-          "Printer",
-          "Software & Types",
-          "Windows OS",
-          "Windows Explorer",
-          "Hardware (I/O)",
-          "CPU",
-          "Computer Types",
-          "History & Generations",
+          "Backup Devices & Protocols",
+          "Printers",
+          "Computer Ports",
+          "Software",
+          "Extensions",
           "Programming",
-          "File Extensions",
+          "Microsoft Word",
+          "Microsoft Excel",
+          "Microsoft PowerPoint",
+          "Microsoft Access",
+          "Keyboard Shortcuts",
+          "Computer Networking",
+          "Internet & Browsers",
+          "E-mail",
+          "E-Banking",
+          "Cybersecurity",
+          "Computer Abbreviations",
         ],
         "Odisha Geography": [
           "Geographical Features of Odisha",
@@ -1405,28 +988,28 @@
             "Static GK",
             "Current Affairs",
           ],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
         },
         {
           id: "general-science",
           number: "Section II",
           title: "General Science",
           subjects: ["Biology", "Physics", "Chemistry"],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" y1="16" x2="18.48" y2="16"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" y1="16" x2="18.48" y2="16"/></svg>`,
         },
         {
           id: "eng-math-reas",
           number: "Section III",
           title: "English, Mathematics & Reasoning",
           subjects: ["English", "Mathematics", "Reasoning"],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
         },
         {
           id: "computer-aptitude",
           number: "Section IV",
           title: "Computer Aptitude",
           subjects: ["Computer Aptitude"],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
         },
         {
           id: "odisha-specifics",
@@ -1439,13 +1022,12 @@
             "Odisha Art, Culture & Misc",
             "Odia",
           ],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
         },
       ];
 
       const STORAGE_NAV_KEY = "spt_royal_nav_state_v1";
       const STORAGE_SCROLL_KEY = "spt_royal_scroll_y_v1";
-      const STORAGE_THEME_KEY = "spt_royal_theme_v1";
 
       let currentView = "home"; // "home" or "section"
       let currentSectionId = sectionsConfig[0].id;
@@ -1488,7 +1070,9 @@
 
       function restoreNavigationState() {
         // First check URL hash if present
-        const rawHash = window.location.hash ? window.location.hash.slice(1) : "";
+        const rawHash = window.location.hash
+          ? window.location.hash.slice(1)
+          : "";
         if (rawHash && rawHash !== "home") {
           const parts = rawHash.split("/").map(decodeURIComponent);
           const foundSec = sectionsConfig.find((s) => s.id === parts[0]);
@@ -1529,10 +1113,7 @@
 
       function normalizeComputerProgress() {
         // Ensure seamless compatibility between legacy "Computer" key and "Computer Aptitude"
-        if (
-          userProgress["Computer"] &&
-          !userProgress["Computer Aptitude"]
-        ) {
+        if (userProgress["Computer"] && !userProgress["Computer Aptitude"]) {
           userProgress["Computer Aptitude"] = { ...userProgress["Computer"] };
         } else if (
           userProgress["Computer Aptitude"] &&
@@ -1569,11 +1150,10 @@
         const grid = document.getElementById("sectionsGrid");
         grid.innerHTML = "";
 
-        sectionsConfig.forEach((section, idx) => {
+        sectionsConfig.forEach((section) => {
           const stats = getSectionStats(section);
           const card = document.createElement("div");
           card.className = "section-card";
-          card.style.animationDelay = `${idx * 0.06}s`;
           card.onclick = () => window.openSection(section.id);
 
           const pillsHtml = section.subjects
@@ -1620,7 +1200,11 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
-      window.openSection = function (sectionId, specificSubject = null, preserveScroll = false) {
+      window.openSection = function (
+        sectionId,
+        specificSubject = null,
+        preserveScroll = false,
+      ) {
         const section = sectionsConfig.find((s) => s.id === sectionId);
         if (!section) return;
 
@@ -1639,7 +1223,8 @@
           section.subjects.length > 1 ? "block" : "none";
         document.getElementById("subjectChaptersView").style.display = "block";
 
-        document.getElementById("activeSectionName").textContent = section.title;
+        document.getElementById("activeSectionName").textContent =
+          section.title;
 
         renderSectionTabs(section);
         window.switchSubject(currentSubject, preserveScroll);
@@ -1666,20 +1251,18 @@
 
         document.getElementById("activeSubjectCrumb").textContent = subject;
 
-        document
-          .querySelectorAll("#tabsContainer .tab-btn")
-          .forEach((btn) => {
-            if (btn.dataset.subject === subject) {
-              btn.classList.add("active");
-              btn.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-                inline: "center",
-              });
-            } else {
-              btn.classList.remove("active");
-            }
-          });
+        document.querySelectorAll("#tabsContainer .tab-btn").forEach((btn) => {
+          if (btn.dataset.subject === subject) {
+            btn.classList.add("active");
+            btn.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+              inline: "center",
+            });
+          } else {
+            btn.classList.remove("active");
+          }
+        });
 
         document.getElementById("currentSubjectTitle").textContent = subject;
         renderChapters();
@@ -1693,7 +1276,10 @@
         const pill = document.getElementById("subjectProgressPill");
         if (!pill) return;
         const stats = getSubjectStats(currentSubject);
-        const pct = stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0;
+        const pct =
+          stats.total > 0
+            ? Math.round((stats.completed / stats.total) * 100)
+            : 0;
         pill.textContent = `${stats.completed} / ${stats.total} Completed (${pct}%)`;
       }
 
@@ -1714,7 +1300,6 @@
 
           const card = document.createElement("div");
           card.className = `chapter-card ${isChecked ? "completed" : ""}`;
-          card.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
           card.onclick = (e) =>
             window.toggleChapter(e, currentSubject, index, card);
 
@@ -1784,30 +1369,6 @@
             user_id: currentUser.id,
             progress_data: userProgress,
           });
-        }
-      }
-
-      window.toggleTheme = function () {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-        html.setAttribute("data-theme", newTheme);
-        safeSetStorage(STORAGE_THEME_KEY, newTheme);
-        updateThemeIcons();
-      };
-
-      function updateThemeIcons() {
-        const currentTheme =
-          document.documentElement.getAttribute("data-theme");
-        const sunIcon = document.getElementById("sunIcon");
-        const moonIcon = document.getElementById("moonIcon");
-
-        if (currentTheme === "dark") {
-          sunIcon.style.display = "block";
-          moonIcon.style.display = "none";
-        } else {
-          sunIcon.style.display = "none";
-          moonIcon.style.display = "block";
         }
       }
 
@@ -1890,13 +1451,10 @@
       );
 
       window.onload = () => {
-        const savedTheme = safeGetStorage(STORAGE_THEME_KEY);
-        if (savedTheme === "light" || savedTheme === "dark") {
-          document.documentElement.setAttribute("data-theme", savedTheme);
-        }
-        updateThemeIcons();
-
-        const savedScrollY = parseInt(safeGetStorage(STORAGE_SCROLL_KEY) || "0", 10);
+        const savedScrollY = parseInt(
+          safeGetStorage(STORAGE_SCROLL_KEY) || "0",
+          10,
+        );
         restoreNavigationState();
 
         if (currentView === "section") {
@@ -1910,12 +1468,6 @@
             window.scrollTo(0, savedScrollY);
           }, 60);
         }
-
-        // Remove intro overlay from DOM after animation finishes (2.7s)
-        setTimeout(() => {
-          const intro = document.getElementById("introOverlay");
-          if (intro) intro.style.display = "none";
-        }, 2700);
 
         checkSession();
       };
