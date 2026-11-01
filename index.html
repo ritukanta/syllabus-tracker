@@ -1,1165 +1,1145 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Syllabus Progress Tracker</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text y='70' font-size='60' font-family='Arial, sans-serif' font-weight='bold' fill='%23ffffff' x='50' text-anchor='middle'>S</text></svg>"
-    />
-    <style>
-      :root {
-        --bg-color: #f8fafc;
-        --surface-color: #ffffff;
-        --surface-elevated: #f1f5f9;
-        --surface-border: #e2e8f0;
-        --surface-border-strong: #cbd5e1;
-        --text-primary: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #64748b;
-        --accent-primary: #2563eb;
-        --accent-hover: #1d4ed8;
-        --accent-soft: #eff6ff;
-        --accent-border: #bfdbfe;
-        --header-bg: #ffffff;
-        --card-hover: #f8fafc;
-        --card-completed-bg: #eff6ff;
-      }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, sans-serif;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syllabus Progress Tracker</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text y='70' font-size='60' font-family='Arial, sans-serif' font-weight='bold' fill='%23ffffff' x='50' text-anchor='middle'>S</text></svg>" />
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --surface-color: #ffffff;
+      --surface-elevated: #f1f5f9;
+      --surface-border: #e2e8f0;
+      --surface-border-strong: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent-primary: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-soft: #eff6ff;
+      --accent-border: #bfdbfe;
+      --header-bg: #ffffff;
+      --card-hover: #f8fafc;
+      --card-completed-bg: #eff6ff;
+    }
 
-      body {
-        background-color: var(--bg-color);
-        color: var(--text-primary);
-        overflow-x: hidden;
-        min-height: 100vh;
-        line-height: 1.5;
-      }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    }
 
-      /* Header */
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-emblem {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background-color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      padding: 0.55rem 1.1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .btn-auth {
+      background-color: var(--accent-primary);
+      color: #ffffff;
+      border: 1px solid var(--accent-primary);
+    }
+
+    .btn-auth:hover {
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    /* Sub-navigation / Back Bar & Subject Tabs */
+    .section-nav-bar {
+      width: 100%;
+      background-color: var(--surface-color);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 0.75rem 2rem;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 6px;
+      background-color: var(--surface-color);
+      color: var(--text-primary);
+      border: 1px solid var(--surface-border-strong);
+    }
+
+    .btn-back:hover {
+      background-color: var(--surface-elevated);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .active-section-crumb {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .active-section-crumb span.crumb-sep {
+      color: var(--text-muted);
+    }
+
+    .tabs-wrapper {
+      width: 100%;
+      background-color: var(--surface-color);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 0 2rem;
+      display: none;
+    }
+
+    .tabs-container {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      gap: 0.5rem;
+      padding: 0.65rem 0;
+    }
+
+    .tabs-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      background-color: var(--surface-elevated);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+      background-color: #e2e8f0;
+    }
+
+    .tab-btn.active {
+      color: #ffffff;
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* Main Container */
+    main {
+      padding: 2rem 2rem 3.5rem;
+      max-width: 1280px;
+      margin: 0 auto;
+      min-height: 75vh;
+    }
+
+    /* Home View: 5 Distinct Sections */
+    #homeSectionsView {
+      display: block;
+    }
+
+    .home-hero {
+      text-align: left;
+      margin-bottom: 1.75rem;
+    }
+
+    .home-hero-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .home-hero-sub {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .sections-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .section-card {
+      background-color: var(--surface-color);
+      border: 1px solid var(--surface-border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.25rem;
+      transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease;
+    }
+
+    .section-card:hover {
+      border-color: var(--accent-primary);
+      background-color: var(--card-hover);
+    }
+
+    .section-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background-color: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      color: var(--accent-primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .section-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background-color: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-primary);
+      flex-shrink: 0;
+    }
+
+    .section-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.35;
+      margin-top: 0.65rem;
+    }
+
+    .section-subjects-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .subject-pill {
+      font-size: 0.8rem;
+      padding: 0.22rem 0.6rem;
+      border-radius: 6px;
+      background-color: var(--surface-elevated);
+      border: 1px solid var(--surface-border);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .section-card-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--surface-border);
+    }
+
+    .section-stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .section-open-cta {
+      color: var(--accent-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-weight: 600;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background-color: var(--surface-elevated);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--accent-primary);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    /* Section Details / Subject Chapters View */
+    #subjectChaptersView {
+      display: none;
+    }
+
+    .subject-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .subject-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .subject-progress-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background-color: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      color: var(--accent-primary);
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .chapter-card {
+      background-color: var(--surface-color);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 1rem 1.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      cursor: pointer;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .chapter-card:hover {
+      background-color: var(--card-hover);
+      border-color: var(--surface-border-strong);
+    }
+
+    .chapter-card.completed {
+      background-color: var(--card-completed-bg);
+      border-color: var(--accent-border);
+    }
+
+    .chapter-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      flex: 1;
+    }
+
+    .serial-number {
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      min-width: 28px;
+    }
+
+    .chapter-card.completed .serial-number {
+      color: var(--accent-primary);
+    }
+
+    .chapter-name {
+      font-size: 0.98rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    .chapter-card.completed .chapter-name {
+      color: var(--accent-hover);
+      font-weight: 600;
+    }
+
+    .checkbox-wrapper {
+      position: relative;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .checkbox-wrapper input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 22px;
+      width: 22px;
+      background-color: var(--surface-color);
+      border: 1.5px solid var(--surface-border-strong);
+      border-radius: 5px;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .chapter-card:hover .checkmark {
+      border-color: var(--accent-primary);
+    }
+
+    .checkbox-wrapper input:checked~.checkmark {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 7px;
+      top: 3px;
+      width: 5px;
+      height: 10px;
+      border: solid #ffffff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .checkbox-wrapper input:checked~.checkmark:after {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
       header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background-color: var(--header-bg);
-        border-bottom: 1px solid var(--surface-border);
-        padding: 0.85rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        cursor: pointer;
-        user-select: none;
-      }
-
-      .brand-emblem {
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-        background-color: var(--accent-primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #ffffff;
-        font-weight: 700;
-        font-size: 1.1rem;
-        flex-shrink: 0;
+        padding: 0.75rem 1rem;
       }
 
       .brand h1 {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        letter-spacing: -0.01em;
+        font-size: 1.1rem;
       }
 
-      .controls {
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-      }
-
-      button {
-        cursor: pointer;
-        border: none;
-        outline: none;
-        border-radius: 8px;
-        padding: 0.55rem 1.1rem;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition:
-          background-color 0.15s ease,
-          border-color 0.15s ease,
-          color 0.15s ease;
-      }
-
-      .btn-auth {
-        background-color: var(--accent-primary);
-        color: #ffffff;
-        border: 1px solid var(--accent-primary);
-      }
-
-      .btn-auth:hover {
-        background-color: var(--accent-hover);
-        border-color: var(--accent-hover);
-      }
-
-      /* Sub-navigation / Back Bar & Subject Tabs */
       .section-nav-bar {
-        width: 100%;
-        background-color: var(--surface-color);
-        border-bottom: 1px solid var(--surface-border);
-        padding: 0.75rem 2rem;
-        display: none;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .nav-left {
-        display: flex;
-        align-items: center;
-        gap: 0.85rem;
-        flex-wrap: wrap;
-      }
-
-      .btn-back {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.45rem 0.9rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        border-radius: 6px;
-        background-color: var(--surface-color);
-        color: var(--text-primary);
-        border: 1px solid var(--surface-border-strong);
-      }
-
-      .btn-back:hover {
-        background-color: var(--surface-elevated);
-        border-color: var(--accent-primary);
-        color: var(--accent-primary);
-      }
-
-      .active-section-crumb {
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .active-section-crumb span.crumb-sep {
-        color: var(--text-muted);
+        padding: 0.65rem 1rem;
       }
 
       .tabs-wrapper {
-        width: 100%;
-        background-color: var(--surface-color);
-        border-bottom: 1px solid var(--surface-border);
-        padding: 0 2rem;
-        display: none;
+        padding: 0 1rem;
       }
 
-      .tabs-container {
-        display: flex;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        gap: 0.5rem;
-        padding: 0.65rem 0;
-      }
-
-      .tabs-container::-webkit-scrollbar {
-        display: none;
-      }
-
-      .tab-btn {
-        background-color: var(--surface-elevated);
-        color: var(--text-secondary);
-        white-space: nowrap;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        border: 1px solid transparent;
-      }
-
-      .tab-btn:hover {
-        color: var(--text-primary);
-        background-color: #e2e8f0;
-      }
-
-      .tab-btn.active {
-        color: #ffffff;
-        background-color: var(--accent-primary);
-        border-color: var(--accent-primary);
-        font-weight: 600;
-      }
-
-      /* Main Container */
-      main {
-        padding: 2rem 2rem 3.5rem;
-        max-width: 1280px;
-        margin: 0 auto;
-        min-height: 75vh;
-      }
-
-      /* Home View: 5 Distinct Sections */
-      #homeSectionsView {
-        display: block;
-      }
-
-      .home-hero {
-        text-align: left;
-        margin-bottom: 1.75rem;
-      }
-
-      .home-hero-title {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 0.35rem;
-      }
-
-      .home-hero-sub {
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-      }
-
-      .sections-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 1.25rem;
-      }
-
-      .section-card {
-        background-color: var(--surface-color);
-        border: 1px solid var(--surface-border);
-        border-radius: 10px;
-        padding: 1.5rem;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 1.25rem;
-        transition:
-          border-color 0.15s ease,
-          background-color 0.15s ease;
-      }
-
-      .section-card:hover {
-        border-color: var(--accent-primary);
-        background-color: var(--card-hover);
-      }
-
-      .section-card-top {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-      }
-
-      .section-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.25rem 0.65rem;
-        border-radius: 6px;
-        background-color: var(--accent-soft);
-        border: 1px solid var(--accent-border);
-        color: var(--accent-primary);
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-
-      .section-icon-box {
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
-        background-color: var(--accent-soft);
-        border: 1px solid var(--accent-border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--accent-primary);
-        flex-shrink: 0;
-      }
-
-      .section-card-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        line-height: 1.35;
-        margin-top: 0.65rem;
-      }
-
-      .section-subjects-pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-      }
-
-      .subject-pill {
-        font-size: 0.8rem;
-        padding: 0.22rem 0.6rem;
-        border-radius: 6px;
-        background-color: var(--surface-elevated);
-        border: 1px solid var(--surface-border);
-        color: var(--text-secondary);
-        font-weight: 500;
-      }
-
-      .section-card-footer {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding-top: 0.75rem;
-        border-top: 1px solid var(--surface-border);
-      }
-
-      .section-stats-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-        font-weight: 600;
-      }
-
-      .section-open-cta {
-        color: var(--accent-primary);
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3rem;
-        font-weight: 600;
-      }
-
-      .progress-track {
-        width: 100%;
-        height: 6px;
-        background-color: var(--surface-elevated);
-        border-radius: 999px;
-        overflow: hidden;
-      }
-
-      .progress-fill {
-        height: 100%;
-        background-color: var(--accent-primary);
-        border-radius: 999px;
-        transition: width 0.25s ease;
-      }
-
-      /* Section Details / Subject Chapters View */
-      #subjectChaptersView {
-        display: none;
-      }
-
-      .subject-header-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--surface-border);
-      }
-
-      .subject-title {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        line-height: 1.25;
-      }
-
-      .subject-progress-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.4rem 0.9rem;
-        border-radius: 999px;
-        background-color: var(--accent-soft);
-        border: 1px solid var(--accent-border);
-        color: var(--accent-primary);
-        font-weight: 600;
-        font-size: 0.875rem;
-      }
-
+      .sections-grid,
       .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 0.85rem;
+        grid-template-columns: 1fr;
       }
 
-      .chapter-card {
-        background-color: var(--surface-color);
-        border: 1px solid var(--surface-border);
-        border-radius: 8px;
-        padding: 1rem 1.15rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.85rem;
-        cursor: pointer;
-        transition:
-          background-color 0.15s ease,
-          border-color 0.15s ease;
+      main {
+        padding: 1.25rem 1rem 2.5rem;
       }
+    }
+  </style>
+</head>
 
-      .chapter-card:hover {
-        background-color: var(--card-hover);
-        border-color: var(--surface-border-strong);
-      }
+<body>
+  <header>
+    <div class="brand" onclick="window.openHomeView()" title="Go to Main Sections">
+      <div class="brand-emblem">S</div>
+      <h1>Syllabus Progress Tracker</h1>
+    </div>
+    <div class="controls">
+      <button type="button" class="btn-auth" id="authBtn" onclick="window.toggleAuth()">
+        Sign In with GitHub
+      </button>
+    </div>
+  </header>
 
-      .chapter-card.completed {
-        background-color: var(--card-completed-bg);
-        border-color: var(--accent-border);
-      }
-
-      .chapter-info {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.75rem;
-        flex: 1;
-      }
-
-      .serial-number {
-        font-weight: 600;
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        min-width: 28px;
-      }
-
-      .chapter-card.completed .serial-number {
-        color: var(--accent-primary);
-      }
-
-      .chapter-name {
-        font-size: 0.98rem;
-        font-weight: 500;
-        line-height: 1.4;
-        color: var(--text-primary);
-      }
-
-      .chapter-card.completed .chapter-name {
-        color: var(--accent-hover);
-        font-weight: 600;
-      }
-
-      .checkbox-wrapper {
-        position: relative;
-        width: 22px;
-        height: 22px;
-        flex-shrink: 0;
-        cursor: pointer;
-      }
-
-      .checkbox-wrapper input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        position: absolute;
-      }
-
-      .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 22px;
-        width: 22px;
-        background-color: var(--surface-color);
-        border: 1.5px solid var(--surface-border-strong);
-        border-radius: 5px;
-        transition:
-          background-color 0.15s ease,
-          border-color 0.15s ease;
-      }
-
-      .chapter-card:hover .checkmark {
-        border-color: var(--accent-primary);
-      }
-
-      .checkbox-wrapper input:checked ~ .checkmark {
-        background-color: var(--accent-primary);
-        border-color: var(--accent-primary);
-      }
-
-      .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-        left: 7px;
-        top: 3px;
-        width: 5px;
-        height: 10px;
-        border: solid #ffffff;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-      }
-
-      .checkbox-wrapper input:checked ~ .checkmark:after {
-        display: block;
-      }
-
-      @media (max-width: 768px) {
-        header {
-          padding: 0.75rem 1rem;
-        }
-        .brand h1 {
-          font-size: 1.1rem;
-        }
-        .section-nav-bar {
-          padding: 0.65rem 1rem;
-        }
-        .tabs-wrapper {
-          padding: 0 1rem;
-        }
-        .sections-grid,
-        .grid-container {
-          grid-template-columns: 1fr;
-        }
-        main {
-          padding: 1.25rem 1rem 2.5rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div
-        class="brand"
-        onclick="window.openHomeView()"
-        title="Go to Main Sections"
-      >
-        <div class="brand-emblem">S</div>
-        <h1>Syllabus Progress Tracker</h1>
-      </div>
-      <div class="controls">
-        <button
-          type="button"
-          class="btn-auth"
-          id="authBtn"
-          onclick="window.toggleAuth()"
-        >
-          Sign In with GitHub
-        </button>
-      </div>
-    </header>
-
-    <!-- Navigation bar shown when inside a section -->
-    <div class="section-nav-bar" id="sectionNavBar">
-      <div class="nav-left">
-        <button
-          type="button"
-          class="btn-back"
-          id="backToMainBtn"
-          onclick="window.openHomeView()"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          Back
-        </button>
-        <div class="active-section-crumb">
-          <span id="activeSectionName">Section</span>
-          <span class="crumb-sep">/</span>
-          <span id="activeSubjectCrumb" style="color: var(--accent-primary)"
-            >Subject</span
-          >
-        </div>
+  <!-- Navigation bar shown when inside a section -->
+  <div class="section-nav-bar" id="sectionNavBar">
+    <div class="nav-left">
+      <button type="button" class="btn-back" id="backToMainBtn" onclick="window.openHomeView()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back
+      </button>
+      <div class="active-section-crumb">
+        <span id="activeSectionName">Section</span>
+        <span class="crumb-sep">/</span>
+        <span id="activeSubjectCrumb" style="color: var(--accent-primary)">Subject</span>
       </div>
     </div>
+  </div>
 
-    <!-- Subject tabs inside the opened section -->
-    <div class="tabs-wrapper" id="tabsWrapper">
-      <div class="tabs-container" id="tabsContainer">
-        <!-- Subject Tabs injected here -->
-      </div>
+  <!-- Subject tabs inside the opened section -->
+  <div class="tabs-wrapper" id="tabsWrapper">
+    <div class="tabs-container" id="tabsContainer">
+      <!-- Subject Tabs injected here -->
     </div>
+  </div>
 
-    <main>
-      <!-- Main Page: 5 Distinct Sections -->
-      <section id="homeSectionsView">
-        <div class="home-hero">
-          <h2 class="home-hero-title">Master Syllabus Sections</h2>
-          <p class="home-hero-sub">
-            Select a section below to open its subjects and track chapter
-            completion
-          </p>
+  <main>
+    <!-- Main Page: 5 Distinct Sections -->
+    <section id="homeSectionsView">
+      <div class="home-hero">
+        <h2 class="home-hero-title">Master Syllabus Sections</h2>
+        <p class="home-hero-sub">
+          Select a section below to open its subjects and track chapter
+          completion
+        </p>
+      </div>
+      <div class="sections-grid" id="sectionsGrid">
+        <!-- 5 Section Cards injected here -->
+      </div>
+    </section>
+
+    <!-- Section Page: Subject Title & Chapter Grid -->
+    <section id="subjectChaptersView">
+      <div class="subject-header-row">
+        <h2 class="subject-title" id="currentSubjectTitle">
+          Select a Subject
+        </h2>
+        <div class="subject-progress-pill" id="subjectProgressPill">
+          0 / 0 Completed
         </div>
-        <div class="sections-grid" id="sectionsGrid">
-          <!-- 5 Section Cards injected here -->
-        </div>
-      </section>
+      </div>
+      <div class="grid-container" id="chaptersGrid">
+        <!-- Chapter cards injected here -->
+      </div>
+    </section>
+  </main>
 
-      <!-- Section Page: Subject Title & Chapter Grid -->
-      <section id="subjectChaptersView">
-        <div class="subject-header-row">
-          <h2 class="subject-title" id="currentSubjectTitle">
-            Select a Subject
-          </h2>
-          <div class="subject-progress-pill" id="subjectProgressPill">
-            0 / 0 Completed
-          </div>
-        </div>
-        <div class="grid-container" id="chaptersGrid">
-          <!-- Chapter cards injected here -->
-        </div>
-      </section>
-    </main>
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+    const SUPABASE_URL = "https://ofcphxplhiaoksdhwyec.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mY3BoeHBsaGlhb2tzZGh3eWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMjY5ODQsImV4cCI6MjA5OTcwMjk4NH0.oeHZWek0eV_23Z124Hs2aaW31efEwW1A45QH6GmjAZ4";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      const SUPABASE_URL = "https://ofcphxplhiaoksdhwyec.supabase.co";
-      const SUPABASE_ANON_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mY3BoeHBsaGlhb2tzZGh3eWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMjY5ODQsImV4cCI6MjA5OTcwMjk4NH0.oeHZWek0eV_23Z124Hs2aaW31efEwW1A45QH6GmjAZ4";
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let currentUser = null;
 
-      let currentUser = null;
+    const rawData = {
+      "Indian Geography": [
+        "Solar System",
+        "Longitude and Latitude",
+        "Earth's Interior and Plate Tectonics",
+        "Rocks Continents and Ocean",
+        "Rocks and Volcanoes",
+        "Geomorphology",
+        "Landforms",
+        "Atmosphere",
+        "Condensation and Precipitation",
+        "Wind, Ocean Current and Cyclone",
+        "India and Its Location",
+        "Himalayas",
+        "Peninsular Plateaus",
+        "Northern Plain and Islands",
+        "Himalayan River System",
+        "Peninsular Rivers",
+        "Dams, Lakes and Waterfall",
+        "Monsoon",
+        "Forest and Grassland",
+        "Soil",
+        "Agriculture",
+        "Minerals",
+        "Transport",
+        "World Map",
+        "Human Geography",
+      ],
+      "Indian Ancient History": [
+        "Stone Age",
+        "Indus Valley Civilization",
+        "Vedic Age",
+        "Jainism and Buddhism",
+        "Mahajanpadas",
+        "Maurya Dynasty",
+        "Post-Maurya Dynasties",
+        "Gupta Dynasty",
+        "Post-Gupta Dynasties",
+        "Sangam Age",
+        "Tripartite Struggle and Cholas",
+      ],
+      "Indian Medieval History": [
+        "Islamic Invasion",
+        "Delhi Sultanate",
+        "Vijayanagara Empire and Bahmis",
+        "Mughals",
+        "Aurangzeb and Later Mughals",
+        "Marathas",
+        "Bhakti and Sufi Movements",
+      ],
+      "Indian Modern History": [
+        "Advent of Europeans",
+        "Socio-Religious Reforms",
+        "Revolt of 1857",
+        "Indian National Congress",
+        "Bengal Partition",
+        "Gandhian Era",
+        "CDM and Simon Commission",
+        "Quit India Movement",
+        "Governor-General and Viceroy",
+      ],
+      "Indian Polity": [
+        "Sources of Constitution",
+        "Making of Constitution",
+        "Salient Features of Constitution",
+        "Preamble, Part I & Part II",
+        "Fundamental Rights",
+        "DPSPs & Fundamental Duties",
+        "President & Vice President",
+        "Prime Minister & Council of Ministers",
+        "Parliament",
+        "State",
+        "Central-State Relations",
+        "Emergency & Constitutional Amendments",
+        "Supreme Court & High Court",
+        "Local Government",
+        "Constitutional & Non Constitutional Bodies",
+        "New Criminal Laws 2023",
+        "Important Acts",
+      ],
+      "Indian Economics": [
+        "Basics of Economy",
+        "Microeconomics",
+        "Inflation and Unemployment",
+        "National Income",
+        "Budget and Taxation",
+        "Money and Banking",
+        "Banking System",
+        "Balance of Payments",
+        "Poverty",
+        "Five Year Plans & NITI Aayog",
+      ],
+      "Static GK": [
+        "Music",
+        "Festivals",
+        "Folk Dances",
+        "Classical Dances",
+        "Books and Authors",
+        "Architecture",
+        "Census 2011",
+        "Sports",
+        "National and International Organizations",
+      ],
+      "Current Affairs": [
+        "Nov 2026",
+        "Oct 2026",
+        "Sept 2026",
+        "Aug 2026",
+        "July 2026",
+        "June 2026",
+        "May 2026",
+        "Apr 2026",
+      ],
+      Biology: [
+        "Cell",
+        "Tissue",
+        "Kingdom",
+        "Nervous System",
+        "Hormones & Plant Movement",
+        "Reproduction",
+        "Digestion & Respiration",
+        "Circulation & Excretion",
+        "Diseases",
+        "Nutrition",
+        "Heredity & Evolution",
+      ],
+      Physics: [
+        "Motion",
+        "Force & Laws of Motion",
+        "Gravitation & Work Done",
+        "Sound",
+        "Optics",
+        "Human Eye",
+        "Electricity",
+        "Magnetic Effect of Electric Current",
+      ],
+      Chemistry: [
+        "Matter",
+        "Atom & Its Structure",
+        "Periodic Table",
+        "Chemical Reactions",
+        "Metals & Non-Metals",
+        "Acids, Bases & Salts",
+        "Carbon & Its Compounds",
+      ],
+      English: [
+        "Nouns",
+        "Pronouns",
+        "Adjectives",
+        "Verbs",
+        "Adverbs",
+        "Prepositions",
+        "Conjunctions",
+        "Subject-Verb Agreement",
+        "Tenses",
+        "Active and Passive Voice",
+        "Direct and Indirect Speech",
+        "Articles",
+        "Conditional Sentences",
+        "Question Tags",
+        "Interjections",
+        "Grammatical Error",
+        "Fill in the Blanks",
+        "Sentence Completion",
+        "Sentence Improvement",
+        "Cloze Test",
+        "VOCAB: Synonyms & Antonyms",
+        "VOCAB: One Word Substitution",
+        "VOCAB: Idioms and Phrases",
+        "VOCAB: Spelling Test",
+      ],
+      Mathematics: [
+        "Geometry (Triangle, Quadrilateral, Polygon, Circle, Lines & Angles)",
+        "Mensuration 2D & 3D",
+        "Number System",
+        "LCM & HCF",
+        "Sequence & Series",
+        "Simplification",
+        "Surds & Indices",
+        "Algebra",
+        "Trigonometry, Height & Distance",
+        "Co-ordinate Geometry",
+        "Permutation & Combination",
+        "Probability",
+        "Statistics",
+        "Percentage",
+        "Profit & Loss",
+        "Discount",
+        "SI & SI Instalment",
+        "CI & CI Instalment",
+        "Ratio & Proportion",
+        "Partnership",
+        "Mixture & Alligation",
+        "Average",
+        "Time & Work",
+        "Pipe & Cistern",
+        "Time & Distance",
+        "Boat & Stream",
+        "Train",
+        "Linear & Circular Race",
+      ],
+      Reasoning: [
+        "Alphabet",
+        "Pair Formation",
+        "Dictionary & Word Formation",
+        "Coding Decoding",
+        "Analogy",
+        "Classification (Odd one out)",
+        "Series",
+        "Missing Term",
+        "Blood Relation",
+        "Distance & Direction",
+        "Order & Ranking",
+        "Seating Arrangement",
+        "Puzzle",
+        "Mathematical Operation",
+        "Arithmetical Reasoning",
+        "Inequality",
+        "Input Output",
+        "Address Matching",
+        "Venn Diagram",
+        "Calendar",
+        "Clock",
+        "Dice",
+        "Figure Counting",
+        "Mirror & Water Image",
+        "Paper Cutting & Folding",
+        "Embedded Figure",
+        "Syllogism",
+        "Analytical Reasoning",
+        "Decision Making",
+        "Data Sufficiency",
+      ],
+      "Computer Aptitude": [
+        "Computer Fundamentals & Hardware",
+        "Types of Computer",
+        "Computer Generations",
+        "CPU & Processing",
+        "Number System",
+        "Memory",
+        "Backup Devices & Protocols",
+        "Printers",
+        "Computer Ports",
+        "Software",
+        "Extensions",
+        "Programming",
+        "Microsoft Word",
+        "Microsoft Excel",
+        "Microsoft PowerPoint",
+        "Microsoft Access",
+        "Keyboard Shortcuts",
+        "Computer Networking",
+        "Internet & Browsers",
+        "E-mail",
+        "E-Banking",
+        "Cybersecurity",
+        "Computer Abbreviations",
+      ],
+      "Odisha Geography": [
+        "Geographical Features of Odisha",
+        "Climate and Soils of Odisha",
+        "Rivers and Drainage System of Odisha",
+        "Natural Vegetation of Odisha",
+        "National Parks and Wildlife Sanctuaries",
+        "Agriculture and Irrigation in Odisha",
+        "Animal Husbandry in Odisha",
+      ],
+      "Odisha History": [
+        "Ancient History of Odisha",
+        "Medieval History of Odisha",
+        "Modern History of Odisha",
+        "Freedom Struggle in Odisha",
+        "Formation of Odisha",
+        "Tribal and Social Movements in Odisha",
+      ],
+      "Odisha Economics": [
+        "Industries of Odisha",
+        "Mineral Resources of Odisha",
+        "Energy Sector of Odisha",
+        "Transportation in Odisha",
+        "Communication and Cinema in Odisha",
+      ],
+      "Odisha Art, Culture & Misc": [
+        "Tourism in Odisha",
+        "Folk Art, Craft and Culture of Odisha",
+        "Music and Dance of Odisha",
+        "Language and Literature of Odisha",
+        "Fairs and Festivals of Odisha",
+        "Caste and Tribes in Odisha",
+        "Famous Personalities",
+        "Demographic Profile (Census)",
+      ],
+      Odia: [
+        "ଧ୍ଵନି, ବର୍ଣ୍ଣ, ମାତ୍ରା ଓ ଫଳା",
+        "ଶବ୍ଦ ବିଭାଗ",
+        "ବାକ୍ୟ ବିଭାଗ",
+        "ବିଶେଷ୍ୟ ଓ ସର୍ବନାମ",
+        "ବିଶେଷଣ",
+        "ଲିଙ୍ଗ, ପୁରୁଷ ଓ ବଚନ",
+        "କାରକ",
+        "ବିଭକ୍ତି",
+        "ଅବ୍ୟୟ",
+        "ଉପସର୍ଗ",
+        "କ୍ରିୟା",
+        "ସନ୍ଧି",
+        "ସମାସ",
+        "କୃଦନ୍ତ",
+        "ତଦ୍ଧିତ",
+        "ଏକପଦୀକରଣ",
+        "ବିପରୀତ-ଅର୍ଥ ବୋଧକ ଶବ୍ଦ",
+        "ପ୍ରତିଶବ୍ଦ",
+        "ରୂଢି",
+        "ଲୋକବାଣୀ",
+        "ଅନୁଛେଦ",
+      ],
+    };
 
-      const rawData = {
-        "Indian Geography": [
-          "Solar System",
-          "Longitude and Latitude",
-          "Earth's Interior and Plate Tectonics",
-          "Rocks Continents and Ocean",
-          "Rocks and Volcanoes",
-          "Geomorphology",
-          "Landforms",
-          "Atmosphere",
-          "Condensation and Precipitation",
-          "Wind, Ocean Current and Cyclone",
-          "India and Its Location",
-          "Himalayas",
-          "Peninsular Plateaus",
-          "Northern Plain and Islands",
-          "Himalayan River System",
-          "Peninsular Rivers",
-          "Dams, Lakes and Waterfall",
-          "Monsoon",
-          "Forest and Grassland",
-          "Soil",
-          "Agriculture",
-          "Minerals",
-          "Transport",
-          "World Map",
-          "Human Geography",
+    const syllabusData = {};
+    for (const subject in rawData) {
+      syllabusData[subject] = rawData[subject].map((chapter) =>
+        chapter.trim(),
+      );
+    }
+
+    const sectionsConfig = [
+      {
+        id: "indian-gs",
+        number: "Section I",
+        title: "Indian General Studies",
+        subjects: [
+          "Indian Geography",
+          "Indian Ancient History",
+          "Indian Medieval History",
+          "Indian Modern History",
+          "Indian Polity",
+          "Indian Economics",
+          "Static GK",
+          "Current Affairs",
         ],
-        "Indian Ancient History": [
-          "Stone Age",
-          "Indus Valley Civilization",
-          "Vedic Age",
-          "Jainism and Buddhism",
-          "Mahajanpadas",
-          "Maurya Dynasty",
-          "Post-Maurya Dynasties",
-          "Gupta Dynasty",
-          "Post-Gupta Dynasties",
-          "Sangam Age",
-          "Tripartite Struggle and Cholas",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+      },
+      {
+        id: "general-science",
+        number: "Section II",
+        title: "General Science",
+        subjects: ["Biology", "Physics", "Chemistry"],
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" y1="16" x2="18.48" y2="16"/></svg>`,
+      },
+      {
+        id: "eng-math-reas",
+        number: "Section III",
+        title: "English, Mathematics & Reasoning",
+        subjects: ["English", "Mathematics", "Reasoning"],
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
+      },
+      {
+        id: "computer-aptitude",
+        number: "Section IV",
+        title: "Computer Aptitude",
+        subjects: ["Computer Aptitude"],
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+      },
+      {
+        id: "odisha-specifics",
+        number: "Section V",
+        title: "Odisha Specifics",
+        subjects: [
+          "Odisha Geography",
+          "Odisha History",
+          "Odisha Economics",
+          "Odisha Art, Culture & Misc",
+          "Odia",
         ],
-        "Indian Medieval History": [
-          "Islamic Invasion",
-          "Delhi Sultanate",
-          "Vijayanagara Empire and Bahmis",
-          "Mughals",
-          "Aurangzeb and Later Mughals",
-          "Marathas",
-          "Bhakti and Sufi Movements",
-        ],
-        "Indian Modern History": [
-          "Advent of Europeans",
-          "Socio-Religious Reforms",
-          "Revolt of 1857",
-          "Indian National Congress",
-          "Bengal Partition",
-          "Gandhian Era",
-          "CDM and Simon Commission",
-          "Quit India Movement",
-          "Governor-General and Viceroy",
-        ],
-        "Indian Polity": [
-          "Sources of Constitution",
-          "Making of Constitution",
-          "Salient Features of Constitution",
-          "Preamble, Part I & Part II",
-          "Fundamental Rights",
-          "DPSPs & Fundamental Duties",
-          "President & Vice President",
-          "Prime Minister & Council of Ministers",
-          "Parliament",
-          "State",
-          "Central-State Relations",
-          "Emergency & Constitutional Amendments",
-          "Supreme Court & High Court",
-          "Local Government",
-          "Constitutional & Non Constitutional Bodies",
-          "New Criminal Laws 2023",
-          "Important Acts",
-        ],
-        "Indian Economics": [
-          "Basics of Economy",
-          "Microeconomics",
-          "Inflation and Unemployment",
-          "National Income",
-          "Budget and Taxation",
-          "Money and Banking",
-          "Banking System",
-          "Balance of Payments",
-          "Poverty",
-          "Five Year Plans & NITI Aayog",
-        ],
-        "Static GK": [
-          "Music",
-          "Festivals",
-          "Folk Dances",
-          "Classical Dances",
-          "Books and Authors",
-          "Architecture",
-          "Census 2011",
-          "Sports",
-          "National and International Organizations",
-        ],
-        "Current Affairs": [
-          "Nov 2026",
-          "Oct 2026",
-          "Sept 2026",
-          "Aug 2026",
-          "July 2026",
-          "June 2026",
-          "May 2026",
-          "Apr 2026",
-        ],
-        Biology: [
-          "Cell",
-          "Tissue",
-          "Kingdom",
-          "Nervous System",
-          "Hormones & Plant Movement",
-          "Reproduction",
-          "Digestion & Respiration",
-          "Circulation & Excretion",
-          "Diseases",
-          "Nutrition",
-          "Heredity & Evolution",
-        ],
-        Physics: [
-          "Motion",
-          "Force & Laws of Motion",
-          "Gravitation & Work Done",
-          "Sound",
-          "Optics",
-          "Human Eye",
-          "Electricity",
-          "Magnetic Effect of Electric Current",
-        ],
-        Chemistry: [
-          "Matter",
-          "Atom & Its Structure",
-          "Periodic Table",
-          "Chemical Reactions",
-          "Metals & Non-Metals",
-          "Acids, Bases & Salts",
-          "Carbon & Its Compounds",
-        ],
-        English: [
-          "Nouns",
-          "Pronouns",
-          "Adjectives",
-          "Verbs",
-          "Adverbs",
-          "Prepositions",
-          "Conjunctions",
-          "Subject-Verb Agreement",
-          "Tenses",
-          "Active and Passive Voice",
-          "Direct and Indirect Speech",
-          "Articles",
-          "Conditional Sentences",
-          "Question Tags",
-          "Interjections",
-          "Grammatical Error",
-          "Fill in the Blanks",
-          "Sentence Completion",
-          "Sentence Improvement",
-          "Cloze Test",
-          "VOCAB: Synonyms & Antonyms",
-          "VOCAB: One Word Substitution",
-          "VOCAB: Idioms and Phrases",
-          "VOCAB: Spelling Test",
-        ],
-        Mathematics: [
-          "Geometry (Triangle, Quadrilateral, Polygon, Circle, Lines & Angles)",
-          "Mensuration 2D & 3D",
-          "Number System",
-          "LCM & HCF",
-          "Sequence & Series",
-          "Simplification",
-          "Surds & Indices",
-          "Algebra",
-          "Trigonometry, Height & Distance",
-          "Co-ordinate Geometry",
-          "Permutation & Combination",
-          "Probability",
-          "Statistics",
-          "Percentage",
-          "Profit & Loss",
-          "Discount",
-          "SI & SI Instalment",
-          "CI & CI Instalment",
-          "Ratio & Proportion",
-          "Partnership",
-          "Mixture & Alligation",
-          "Average",
-          "Time & Work",
-          "Pipe & Cistern",
-          "Time & Distance",
-          "Boat & Stream",
-          "Train",
-          "Linear & Circular Race",
-        ],
-        Reasoning: [
-          "Alphabet",
-          "Pair Formation",
-          "Dictionary & Word Formation",
-          "Coding Decoding",
-          "Analogy",
-          "Classification (Odd one out)",
-          "Series",
-          "Missing Term",
-          "Blood Relation",
-          "Distance & Direction",
-          "Order & Ranking",
-          "Seating Arrangement",
-          "Puzzle",
-          "Mathematical Operation",
-          "Arithmetical Reasoning",
-          "Inequality",
-          "Input Output",
-          "Address Matching",
-          "Venn Diagram",
-          "Calendar",
-          "Clock",
-          "Dice",
-          "Figure Counting",
-          "Mirror & Water Image",
-          "Paper Cutting & Folding",
-          "Embedded Figure",
-          "Syllogism",
-          "Analytical Reasoning",
-          "Decision Making",
-          "Data Sufficiency",
-        ],
-        "Computer Aptitude": [
-          "Computer Fundamentals & Hardware",
-          "Types of Computer",
-          "Computer Generations",
-          "CPU & Processing",
-          "Number System",
-          "Memory",
-          "Backup Devices & Protocols",
-          "Printers",
-          "Computer Ports",
-          "Software",
-          "Extensions",
-          "Programming",
-          "Microsoft Word",
-          "Microsoft Excel",
-          "Microsoft PowerPoint",
-          "Microsoft Access",
-          "Keyboard Shortcuts",
-          "Computer Networking",
-          "Internet & Browsers",
-          "E-mail",
-          "E-Banking",
-          "Cybersecurity",
-          "Computer Abbreviations",
-        ],
-        "Odisha Geography": [
-          "Geographical Features of Odisha",
-          "Climate and Soils of Odisha",
-          "Rivers and Drainage System of Odisha",
-          "Natural Vegetation of Odisha",
-          "National Parks and Wildlife Sanctuaries",
-          "Agriculture and Irrigation in Odisha",
-          "Animal Husbandry in Odisha",
-        ],
-        "Odisha History": [
-          "Ancient History of Odisha",
-          "Medieval History of Odisha",
-          "Modern History of Odisha",
-          "Freedom Struggle in Odisha",
-          "Formation of Odisha",
-          "Tribal and Social Movements in Odisha",
-        ],
-        "Odisha Economics": [
-          "Industries of Odisha",
-          "Mineral Resources of Odisha",
-          "Energy Sector of Odisha",
-          "Transportation in Odisha",
-          "Communication and Cinema in Odisha",
-        ],
-        "Odisha Art, Culture & Misc": [
-          "Tourism in Odisha",
-          "Folk Art, Craft and Culture of Odisha",
-          "Music and Dance of Odisha",
-          "Language and Literature of Odisha",
-          "Fairs and Festivals of Odisha",
-          "Caste and Tribes in Odisha",
-          "Famous Personalities",
-          "Demographic Profile (Census)",
-        ],
-        Odia: [
-          "ଧ୍ଵନି, ବର୍ଣ୍ଣ, ମାତ୍ରା ଓ ଫଳା",
-          "ଶବ୍ଦ ବିଭାଗ",
-          "ବାକ୍ୟ ବିଭାଗ",
-          "ବିଶେଷ୍ୟ ଓ ସର୍ବନାମ",
-          "ବିଶେଷଣ",
-          "ଲିଙ୍ଗ, ପୁରୁଷ ଓ ବଚନ",
-          "କାରକ",
-          "ବିଭକ୍ତି",
-          "ଅବ୍ୟୟ",
-          "ଉପସର୍ଗ",
-          "କ୍ରିୟା",
-          "ସନ୍ଧି",
-          "ସମାସ",
-          "କୃଦନ୍ତ",
-          "ତଦ୍ଧିତ",
-          "ଏକପଦୀକରଣ",
-          "ବିପରୀତ-ଅର୍ଥ ବୋଧକ ଶବ୍ଦ",
-          "ପ୍ରତିଶବ୍ଦ",
-          "ରୂଢି",
-          "ଲୋକବାଣୀ",
-          "ଅନୁଛେଦ",
-        ],
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+      },
+    ];
+
+    const STORAGE_NAV_KEY = "spt_royal_nav_state_v1";
+    const STORAGE_SCROLL_KEY = "spt_royal_scroll_y_v1";
+
+    let currentView = "home"; // "home" or "section"
+    let currentSectionId = sectionsConfig[0].id;
+    let currentSubject = sectionsConfig[0].subjects[0];
+    let userProgress = {};
+
+    function safeGetStorage(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function safeSetStorage(key, val) {
+      try {
+        localStorage.setItem(key, val);
+      } catch (e) {
+        // ignore storage errors in restricted iframes
+      }
+    }
+
+    function saveNavigationState() {
+      const stateObj = {
+        view: currentView,
+        sectionId: currentSectionId,
+        subject: currentSubject,
       };
-
-      const syllabusData = {};
-      for (const subject in rawData) {
-        syllabusData[subject] = rawData[subject].map((chapter) =>
-          chapter.trim(),
-        );
+      safeSetStorage(STORAGE_NAV_KEY, JSON.stringify(stateObj));
+      try {
+        const hash =
+          currentView === "home"
+            ? "#home"
+            : `#${encodeURIComponent(currentSectionId)}/${encodeURIComponent(currentSubject)}`;
+        window.history.replaceState(null, "", hash);
+      } catch (e) {
+        // ignore history errors
       }
+    }
 
-      const sectionsConfig = [
-        {
-          id: "indian-gs",
-          number: "Section I",
-          title: "Indian General Studies",
-          subjects: [
-            "Indian Geography",
-            "Indian Ancient History",
-            "Indian Medieval History",
-            "Indian Modern History",
-            "Indian Polity",
-            "Indian Economics",
-            "Static GK",
-            "Current Affairs",
-          ],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
-        },
-        {
-          id: "general-science",
-          number: "Section II",
-          title: "General Science",
-          subjects: ["Biology", "Physics", "Chemistry"],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" y1="16" x2="18.48" y2="16"/></svg>`,
-        },
-        {
-          id: "eng-math-reas",
-          number: "Section III",
-          title: "English, Mathematics & Reasoning",
-          subjects: ["English", "Mathematics", "Reasoning"],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
-        },
-        {
-          id: "computer-aptitude",
-          number: "Section IV",
-          title: "Computer Aptitude",
-          subjects: ["Computer Aptitude"],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
-        },
-        {
-          id: "odisha-specifics",
-          number: "Section V",
-          title: "Odisha Specifics",
-          subjects: [
-            "Odisha Geography",
-            "Odisha History",
-            "Odisha Economics",
-            "Odisha Art, Culture & Misc",
-            "Odia",
-          ],
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
-        },
-      ];
-
-      const STORAGE_NAV_KEY = "spt_royal_nav_state_v1";
-      const STORAGE_SCROLL_KEY = "spt_royal_scroll_y_v1";
-
-      let currentView = "home"; // "home" or "section"
-      let currentSectionId = sectionsConfig[0].id;
-      let currentSubject = sectionsConfig[0].subjects[0];
-      let userProgress = {};
-
-      function safeGetStorage(key) {
-        try {
-          return localStorage.getItem(key);
-        } catch (e) {
-          return null;
+    function restoreNavigationState() {
+      // First check URL hash if present
+      const rawHash = window.location.hash
+        ? window.location.hash.slice(1)
+        : "";
+      if (rawHash && rawHash !== "home") {
+        const parts = rawHash.split("/").map(decodeURIComponent);
+        const foundSec = sectionsConfig.find((s) => s.id === parts[0]);
+        if (foundSec) {
+          currentView = "section";
+          currentSectionId = foundSec.id;
+          currentSubject =
+            parts[1] && foundSec.subjects.includes(parts[1])
+              ? parts[1]
+              : foundSec.subjects[0];
+          return;
         }
       }
 
-      function safeSetStorage(key, val) {
+      const savedRaw = safeGetStorage(STORAGE_NAV_KEY);
+      if (savedRaw) {
         try {
-          localStorage.setItem(key, val);
-        } catch (e) {
-          // ignore storage errors in restricted iframes
-        }
-      }
-
-      function saveNavigationState() {
-        const stateObj = {
-          view: currentView,
-          sectionId: currentSectionId,
-          subject: currentSubject,
-        };
-        safeSetStorage(STORAGE_NAV_KEY, JSON.stringify(stateObj));
-        try {
-          const hash =
-            currentView === "home"
-              ? "#home"
-              : `#${encodeURIComponent(currentSectionId)}/${encodeURIComponent(currentSubject)}`;
-          window.history.replaceState(null, "", hash);
-        } catch (e) {
-          // ignore history errors
-        }
-      }
-
-      function restoreNavigationState() {
-        // First check URL hash if present
-        const rawHash = window.location.hash
-          ? window.location.hash.slice(1)
-          : "";
-        if (rawHash && rawHash !== "home") {
-          const parts = rawHash.split("/").map(decodeURIComponent);
-          const foundSec = sectionsConfig.find((s) => s.id === parts[0]);
-          if (foundSec) {
-            currentView = "section";
-            currentSectionId = foundSec.id;
-            currentSubject =
-              parts[1] && foundSec.subjects.includes(parts[1])
-                ? parts[1]
+          const parsed = JSON.parse(savedRaw);
+          if (parsed.view === "section") {
+            const foundSec = sectionsConfig.find(
+              (s) => s.id === parsed.sectionId,
+            );
+            if (foundSec) {
+              currentView = "section";
+              currentSectionId = foundSec.id;
+              currentSubject = foundSec.subjects.includes(parsed.subject)
+                ? parsed.subject
                 : foundSec.subjects[0];
-            return;
-          }
-        }
-
-        const savedRaw = safeGetStorage(STORAGE_NAV_KEY);
-        if (savedRaw) {
-          try {
-            const parsed = JSON.parse(savedRaw);
-            if (parsed.view === "section") {
-              const foundSec = sectionsConfig.find(
-                (s) => s.id === parsed.sectionId,
-              );
-              if (foundSec) {
-                currentView = "section";
-                currentSectionId = foundSec.id;
-                currentSubject = foundSec.subjects.includes(parsed.subject)
-                  ? parsed.subject
-                  : foundSec.subjects[0];
-                return;
-              }
+              return;
             }
-          } catch (e) {
-            // fallback to home
           }
-        }
-        currentView = "home";
-      }
-
-      function normalizeComputerProgress() {
-        // Ensure seamless compatibility between legacy "Computer" key and "Computer Aptitude"
-        if (userProgress["Computer"] && !userProgress["Computer Aptitude"]) {
-          userProgress["Computer Aptitude"] = { ...userProgress["Computer"] };
-        } else if (
-          userProgress["Computer Aptitude"] &&
-          !userProgress["Computer"]
-        ) {
-          userProgress["Computer"] = { ...userProgress["Computer Aptitude"] };
+        } catch (e) {
+          // fallback to home
         }
       }
+      currentView = "home";
+    }
 
-      function getSubjectStats(subject) {
-        const chapters = syllabusData[subject] || [];
-        const total = chapters.length;
-        let completed = 0;
-        const subjProg = userProgress[subject] || {};
-        for (let i = 0; i < total; i++) {
-          if (subjProg[i]) completed++;
-        }
-        return { completed, total };
+    function normalizeComputerProgress() {
+      // Ensure seamless compatibility between legacy "Computer" key and "Computer Aptitude"
+      if (userProgress["Computer"] && !userProgress["Computer Aptitude"]) {
+        userProgress["Computer Aptitude"] = { ...userProgress["Computer"] };
+      } else if (
+        userProgress["Computer Aptitude"] &&
+        !userProgress["Computer"]
+      ) {
+        userProgress["Computer"] = { ...userProgress["Computer Aptitude"] };
       }
+    }
 
-      function getSectionStats(section) {
-        let completed = 0;
-        let total = 0;
-        section.subjects.forEach((subj) => {
-          const st = getSubjectStats(subj);
-          completed += st.completed;
-          total += st.total;
-        });
-        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-        return { completed, total, percent };
+    function getSubjectStats(subject) {
+      const chapters = syllabusData[subject] || [];
+      const total = chapters.length;
+      let completed = 0;
+      const subjProg = userProgress[subject] || {};
+      for (let i = 0; i < total; i++) {
+        if (subjProg[i]) completed++;
       }
+      return { completed, total };
+    }
 
-      function renderSectionsGrid() {
-        const grid = document.getElementById("sectionsGrid");
-        grid.innerHTML = "";
+    function getSectionStats(section) {
+      let completed = 0;
+      let total = 0;
+      section.subjects.forEach((subj) => {
+        const st = getSubjectStats(subj);
+        completed += st.completed;
+        total += st.total;
+      });
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+      return { completed, total, percent };
+    }
 
-        sectionsConfig.forEach((section) => {
-          const stats = getSectionStats(section);
-          const card = document.createElement("div");
-          card.className = "section-card";
-          card.onclick = () => window.openSection(section.id);
+    function renderSectionsGrid() {
+      const grid = document.getElementById("sectionsGrid");
+      grid.innerHTML = "";
 
-          const pillsHtml = section.subjects
-            .map((s) => `<span class="subject-pill">${s}</span>`)
-            .join("");
+      sectionsConfig.forEach((section) => {
+        const stats = getSectionStats(section);
+        const card = document.createElement("div");
+        card.className = "section-card";
+        card.onclick = () => window.openSection(section.id);
 
-          card.innerHTML = `
+        const pillsHtml = section.subjects
+          .map((s) => `<span class="subject-pill">${s}</span>`)
+          .join("");
+
+        card.innerHTML = `
             <div>
               <div class="section-card-top">
                 <span class="section-badge">${section.number}</span>
@@ -1181,128 +1161,128 @@
             </div>
           `;
 
-          grid.appendChild(card);
-        });
-      }
+        grid.appendChild(card);
+      });
+    }
 
-      window.openHomeView = function () {
-        currentView = "home";
-        saveNavigationState();
-        safeSetStorage(STORAGE_SCROLL_KEY, "0");
+    window.openHomeView = function () {
+      currentView = "home";
+      saveNavigationState();
+      safeSetStorage(STORAGE_SCROLL_KEY, "0");
 
-        document.getElementById("sectionNavBar").style.display = "none";
-        document.getElementById("tabsWrapper").style.display = "none";
-        document.getElementById("subjectChaptersView").style.display = "none";
-        document.getElementById("homeSectionsView").style.display = "block";
+      document.getElementById("sectionNavBar").style.display = "none";
+      document.getElementById("tabsWrapper").style.display = "none";
+      document.getElementById("subjectChaptersView").style.display = "none";
+      document.getElementById("homeSectionsView").style.display = "block";
 
-        renderSectionsGrid();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      };
+      renderSectionsGrid();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
-      window.openSection = function (
-        sectionId,
-        specificSubject = null,
-        preserveScroll = false,
-      ) {
-        const section = sectionsConfig.find((s) => s.id === sectionId);
-        if (!section) return;
+    window.openSection = function (
+      sectionId,
+      specificSubject = null,
+      preserveScroll = false,
+    ) {
+      const section = sectionsConfig.find((s) => s.id === sectionId);
+      if (!section) return;
 
-        currentView = "section";
-        currentSectionId = section.id;
-        currentSubject =
-          specificSubject && section.subjects.includes(specificSubject)
-            ? specificSubject
-            : section.subjects[0];
+      currentView = "section";
+      currentSectionId = section.id;
+      currentSubject =
+        specificSubject && section.subjects.includes(specificSubject)
+          ? specificSubject
+          : section.subjects[0];
 
-        saveNavigationState();
+      saveNavigationState();
 
-        document.getElementById("homeSectionsView").style.display = "none";
-        document.getElementById("sectionNavBar").style.display = "flex";
-        document.getElementById("tabsWrapper").style.display =
-          section.subjects.length > 1 ? "block" : "none";
-        document.getElementById("subjectChaptersView").style.display = "block";
+      document.getElementById("homeSectionsView").style.display = "none";
+      document.getElementById("sectionNavBar").style.display = "flex";
+      document.getElementById("tabsWrapper").style.display =
+        section.subjects.length > 1 ? "block" : "none";
+      document.getElementById("subjectChaptersView").style.display = "block";
 
-        document.getElementById("activeSectionName").textContent =
-          section.title;
+      document.getElementById("activeSectionName").textContent =
+        section.title;
 
-        renderSectionTabs(section);
-        window.switchSubject(currentSubject, preserveScroll);
-      };
+      renderSectionTabs(section);
+      window.switchSubject(currentSubject, preserveScroll);
+    };
 
-      function renderSectionTabs(section) {
-        const container = document.getElementById("tabsContainer");
-        container.innerHTML = "";
+    function renderSectionTabs(section) {
+      const container = document.getElementById("tabsContainer");
+      container.innerHTML = "";
 
-        section.subjects.forEach((subject) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "tab-btn";
-          btn.dataset.subject = subject;
-          btn.textContent = subject;
-          btn.onclick = () => window.switchSubject(subject, false);
-          container.appendChild(btn);
-        });
-      }
+      section.subjects.forEach((subject) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tab-btn";
+        btn.dataset.subject = subject;
+        btn.textContent = subject;
+        btn.onclick = () => window.switchSubject(subject, false);
+        container.appendChild(btn);
+      });
+    }
 
-      window.switchSubject = function (subject, preserveScroll = false) {
-        currentSubject = subject;
-        saveNavigationState();
+    window.switchSubject = function (subject, preserveScroll = false) {
+      currentSubject = subject;
+      saveNavigationState();
 
-        document.getElementById("activeSubjectCrumb").textContent = subject;
+      document.getElementById("activeSubjectCrumb").textContent = subject;
 
-        document.querySelectorAll("#tabsContainer .tab-btn").forEach((btn) => {
-          if (btn.dataset.subject === subject) {
-            btn.classList.add("active");
-            btn.scrollIntoView({
-              behavior: "smooth",
-              block: "nearest",
-              inline: "center",
-            });
-          } else {
-            btn.classList.remove("active");
-          }
-        });
-
-        document.getElementById("currentSubjectTitle").textContent = subject;
-        renderChapters();
-
-        if (!preserveScroll) {
-          safeSetStorage(STORAGE_SCROLL_KEY, "0");
+      document.querySelectorAll("#tabsContainer .tab-btn").forEach((btn) => {
+        if (btn.dataset.subject === subject) {
+          btn.classList.add("active");
+          btn.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+          });
+        } else {
+          btn.classList.remove("active");
         }
-      };
+      });
 
-      function updateSubjectProgressHeader() {
-        const pill = document.getElementById("subjectProgressPill");
-        if (!pill) return;
-        const stats = getSubjectStats(currentSubject);
-        const pct =
-          stats.total > 0
-            ? Math.round((stats.completed / stats.total) * 100)
-            : 0;
-        pill.textContent = `${stats.completed} / ${stats.total} Completed (${pct}%)`;
+      document.getElementById("currentSubjectTitle").textContent = subject;
+      renderChapters();
+
+      if (!preserveScroll) {
+        safeSetStorage(STORAGE_SCROLL_KEY, "0");
       }
+    };
 
-      function renderChapters() {
-        const grid = document.getElementById("chaptersGrid");
-        grid.innerHTML = "";
+    function updateSubjectProgressHeader() {
+      const pill = document.getElementById("subjectProgressPill");
+      if (!pill) return;
+      const stats = getSubjectStats(currentSubject);
+      const pct =
+        stats.total > 0
+          ? Math.round((stats.completed / stats.total) * 100)
+          : 0;
+      pill.textContent = `${stats.completed} / ${stats.total} Completed (${pct}%)`;
+    }
 
-        const chapters = syllabusData[currentSubject];
-        if (!chapters) return;
+    function renderChapters() {
+      const grid = document.getElementById("chaptersGrid");
+      grid.innerHTML = "";
 
-        updateSubjectProgressHeader();
+      const chapters = syllabusData[currentSubject];
+      if (!chapters) return;
 
-        chapters.forEach((chapter, index) => {
-          const isChecked =
-            userProgress[currentSubject] && userProgress[currentSubject][index]
-              ? true
-              : false;
+      updateSubjectProgressHeader();
 
-          const card = document.createElement("div");
-          card.className = `chapter-card ${isChecked ? "completed" : ""}`;
-          card.onclick = (e) =>
-            window.toggleChapter(e, currentSubject, index, card);
+      chapters.forEach((chapter, index) => {
+        const isChecked =
+          userProgress[currentSubject] && userProgress[currentSubject][index]
+            ? true
+            : false;
 
-          card.innerHTML = `
+        const card = document.createElement("div");
+        card.className = `chapter-card ${isChecked ? "completed" : ""}`;
+        card.onclick = (e) =>
+          window.toggleChapter(e, currentSubject, index, card);
+
+        card.innerHTML = `
             <div class="chapter-info">
               <span class="serial-number">${String(index + 1).padStart(2, "0")}.</span>
               <span class="chapter-name">${chapter}</span>
@@ -1313,163 +1293,164 @@
             </label>
           `;
 
-          grid.appendChild(card);
+        grid.appendChild(card);
+      });
+    }
+
+    window.toggleChapter = function (e, subject, index, cardElement) {
+      if (e.target.tagName.toLowerCase() === "input") return;
+
+      const checkbox = cardElement.querySelector("input");
+      checkbox.checked = !checkbox.checked;
+      handleStateChange(subject, index, checkbox.checked, cardElement);
+    };
+
+    window.toggleChapterCheckbox = function (
+      subject,
+      index,
+      checkboxElement,
+      cardElement,
+    ) {
+      handleStateChange(subject, index, checkboxElement.checked, cardElement);
+    };
+
+    async function handleStateChange(
+      subject,
+      index,
+      isCompleted,
+      cardElement,
+    ) {
+      if (isCompleted) {
+        cardElement.classList.add("completed");
+      } else {
+        cardElement.classList.remove("completed");
+      }
+
+      if (!userProgress[subject]) userProgress[subject] = {};
+      userProgress[subject][index] = isCompleted;
+
+      if (subject === "Computer Aptitude") {
+        if (!userProgress["Computer"]) userProgress["Computer"] = {};
+        userProgress["Computer"][index] = isCompleted;
+      }
+
+      updateSubjectProgressHeader();
+
+      if (currentUser) {
+        const chapterName = syllabusData[subject][index];
+        const actionText = isCompleted
+          ? `Checked: ${chapterName} in ${subject}`
+          : `Unchecked: ${chapterName} in ${subject}`;
+
+        await supabase.from("site_logs").insert([{ action: actionText }]);
+
+        await supabase.from("user_progress").upsert({
+          user_id: currentUser.id,
+          progress_data: userProgress,
         });
       }
+    }
 
-      window.toggleChapter = function (e, subject, index, cardElement) {
-        if (e.target.tagName.toLowerCase() === "input") return;
-
-        const checkbox = cardElement.querySelector("input");
-        checkbox.checked = !checkbox.checked;
-        handleStateChange(subject, index, checkbox.checked, cardElement);
-      };
-
-      window.toggleChapterCheckbox = function (
-        subject,
-        index,
-        checkboxElement,
-        cardElement,
-      ) {
-        handleStateChange(subject, index, checkboxElement.checked, cardElement);
-      };
-
-      async function handleStateChange(
-        subject,
-        index,
-        isCompleted,
-        cardElement,
-      ) {
-        if (isCompleted) {
-          cardElement.classList.add("completed");
-        } else {
-          cardElement.classList.remove("completed");
-        }
-
-        if (!userProgress[subject]) userProgress[subject] = {};
-        userProgress[subject][index] = isCompleted;
-
-        if (subject === "Computer Aptitude") {
-          if (!userProgress["Computer"]) userProgress["Computer"] = {};
-          userProgress["Computer"][index] = isCompleted;
-        }
-
-        updateSubjectProgressHeader();
-
-        if (currentUser) {
-          const chapterName = syllabusData[subject][index];
-          const actionText = isCompleted
-            ? `Checked: ${chapterName} in ${subject}`
-            : `Unchecked: ${chapterName} in ${subject}`;
-
-          await supabase.from("site_logs").insert([{ action: actionText }]);
-
-          await supabase.from("user_progress").upsert({
-            user_id: currentUser.id,
-            progress_data: userProgress,
-          });
-        }
-      }
-
-      window.toggleAuth = async function () {
-        if (currentUser) {
-          const { error } = await supabase.auth.signOut();
-          if (!error) {
-            currentUser = null;
-            document.getElementById("authBtn").textContent =
-              "Sign In with GitHub";
-            userProgress = {};
-            if (currentView === "home") {
-              renderSectionsGrid();
-            } else {
-              renderChapters();
-            }
-          }
-        } else {
-          await supabase.auth.signInWithOAuth({
-            provider: "github",
-            options: {
-              redirectTo: window.location.origin + window.location.pathname,
-            },
-          });
-        }
-      };
-
-      async function loadUserData(userId) {
-        const { data } = await supabase
-          .from("user_progress")
-          .select("progress_data")
-          .eq("user_id", userId)
-          .single();
-
-        if (data && data.progress_data) {
-          userProgress = data.progress_data;
-          normalizeComputerProgress();
+    window.toggleAuth = async function () {
+      if (currentUser) {
+        const { error } = await supabase.auth.signOut();
+        if (!error) {
+          currentUser = null;
+          document.getElementById("authBtn").textContent =
+            "Sign In with GitHub";
+          userProgress = {};
           if (currentView === "home") {
             renderSectionsGrid();
           } else {
             renderChapters();
           }
         }
-      }
-
-      async function checkSession() {
-        supabase.auth.onAuthStateChange(async (event, currentSession) => {
-          if (currentSession) {
-            currentUser = currentSession.user;
-            document.getElementById("authBtn").textContent = "Sign Out";
-            await loadUserData(currentUser.id);
-          } else {
-            currentUser = null;
-            document.getElementById("authBtn").textContent =
-              "Sign In with GitHub";
-            userProgress = {};
-            if (currentView === "home") {
-              renderSectionsGrid();
-            } else {
-              renderChapters();
-            }
-          }
+      } else {
+        await supabase.auth.signInWithOAuth({
+          provider: "github",
+          options: {
+            redirectTo: window.location.origin + window.location.pathname,
+          },
         });
       }
+    };
 
-      // Persist scroll position so refreshing stays in the exact same region
-      let scrollTicking = false;
-      window.addEventListener(
-        "scroll",
-        () => {
-          if (!scrollTicking) {
-            window.requestAnimationFrame(() => {
-              safeSetStorage(STORAGE_SCROLL_KEY, String(window.scrollY || 0));
-              scrollTicking = false;
-            });
-            scrollTicking = true;
-          }
-        },
-        { passive: true },
-      );
+    async function loadUserData(userId) {
+      const { data } = await supabase
+        .from("user_progress")
+        .select("progress_data")
+        .eq("user_id", userId)
+        .single();
 
-      window.onload = () => {
-        const savedScrollY = parseInt(
-          safeGetStorage(STORAGE_SCROLL_KEY) || "0",
-          10,
-        );
-        restoreNavigationState();
-
-        if (currentView === "section") {
-          window.openSection(currentSectionId, currentSubject, true);
-        } else {
+      if (data && data.progress_data) {
+        userProgress = data.progress_data;
+        normalizeComputerProgress();
+        if (currentView === "home") {
           renderSectionsGrid();
+        } else {
+          renderChapters();
         }
+      }
+    }
 
-        if (!isNaN(savedScrollY) && savedScrollY > 0) {
-          setTimeout(() => {
-            window.scrollTo(0, savedScrollY);
-          }, 60);
+    async function checkSession() {
+      supabase.auth.onAuthStateChange(async (event, currentSession) => {
+        if (currentSession) {
+          currentUser = currentSession.user;
+          document.getElementById("authBtn").textContent = "Sign Out";
+          await loadUserData(currentUser.id);
+        } else {
+          currentUser = null;
+          document.getElementById("authBtn").textContent =
+            "Sign In with GitHub";
+          userProgress = {};
+          if (currentView === "home") {
+            renderSectionsGrid();
+          } else {
+            renderChapters();
+          }
         }
+      });
+    }
 
-        checkSession();
-      };
-    </script>
-  </body>
+    // Persist scroll position so refreshing stays in the exact same region
+    let scrollTicking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!scrollTicking) {
+          window.requestAnimationFrame(() => {
+            safeSetStorage(STORAGE_SCROLL_KEY, String(window.scrollY || 0));
+            scrollTicking = false;
+          });
+          scrollTicking = true;
+        }
+      },
+      { passive: true },
+    );
+
+    window.onload = () => {
+      const savedScrollY = parseInt(
+        safeGetStorage(STORAGE_SCROLL_KEY) || "0",
+        10,
+      );
+      restoreNavigationState();
+
+      if (currentView === "section") {
+        window.openSection(currentSectionId, currentSubject, true);
+      } else {
+        renderSectionsGrid();
+      }
+
+      if (!isNaN(savedScrollY) && savedScrollY > 0) {
+        setTimeout(() => {
+          window.scrollTo(0, savedScrollY);
+        }, 60);
+      }
+
+      checkSession();
+    };
+  </script>
+</body>
+
 </html>
